@@ -1,0 +1,69 @@
+{
+ "data": {
+  "9947330a1793b6cb964267e6e33ecb3530170e8433caf81a56e8ab2d01ca37a3": {
+   "transaction": {
+    "block_id": 969755,
+    "id": 417376411,
+    "hash": "9947330a1793b6cb964267e6e33ecb3530170e8433caf81a56e8ab2d01ca37a3",
+    "date": "2026-09-22",
+    "time": "2026-09-22 21:09:31",
+    "size": 226,
+    "version": 1,
+    "lock_time": 0,
+    "is_coinbase": false,
+    "input_count": 1,
+    "output_count": 2,
+    "input_total": 127311927,
+    "output_total": 127311332,
+    "fee": 595
+   },
+   "inputs": [
+    {
+     "block_id": 969747,
+     "transaction_hash": "228dafeb2e043f79e94c93ee47805df8a95265233d474fced769d5fc54e5a079",
+     "index": 0,
+     "time": "2026-09-22 20:19:17",
+     "value": 127311927,
+     "recipient": "qrdd5m5s72wzs4u373ux2fcpn02hw00u7v9wr8cex8",
+     "type": "pubkeyhash",
+     "spending_transaction_hash": "9947330a1793b6cb964267e6e33ecb3530170e8433caf81a56e8ab2d01ca37a3",
+     "spending_index": 0
+    }
+   ],
+   "outputs": [
+    {
+     "block_id": 969755,
+     "transaction_hash": "9947330a1793b6cb964267e6e33ecb3530170e8433caf81a56e8ab2d01ca37a3",
+     "index": 0,
+     "time": "2026-09-22 21:09:31",
+     "value": 2644338,
+     "recipient": "qz8zs4s480v82udw6xdyhc8c6u2zu4uug5dt7th92j",
+     "type": "pubkeyhash",
+     "script_hex": "76a9148e2856153bd87571aed19a4be0f8d7142e579c4588ac",
+     "is_spent": false
+    },
+    {
+     "block_id": 969755,
+     "transaction_hash": "9947330a1793b6cb964267e6e33ecb3530170e8433caf81a56e8ab2d01ca37a3",
+     "index": 1,
+     "time": "2026-09-22 21:09:31",
+     "value": 124666994,
+     "recipient": "qrdd5m5s72wzs4u373ux2fcpn02hw00u7v9wr8cex8",
+     "type": "pubkeyhash",
+     "script_hex": "76a914dada6e90f29c285791f4786527019bd5773dfcf388ac",
+     "is_spent": true
+    }
+   ]
+  }
+ },
+ "context": {
+  "code": 200,
+  "source": "D",
+  "results": 1,
+  "state": 973287,
+  "api": {
+   "version": "2.0.95-ie"
+  },
+  "request_cost": 1
+ }
+}

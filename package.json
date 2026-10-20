@@ -1,0 +1,30 @@
+{
+  "name": "wheres-my-swap",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "check": "tsx src/cli.ts",
+    "test": "vitest run",
+    "test:live": "vitest run --config vitest.live.config.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "btc-refund": "tsx src/refund-cli.ts"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.4",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  },
+  "description": "Trace a NEAR Intents swap hop by hop from public chain data: where the money is and who can move it.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cryppit/wheres-my-swap"
+  },
+  "engines": {
+    "node": ">=22.15"
+  }
+}

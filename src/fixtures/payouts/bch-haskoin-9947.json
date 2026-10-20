@@ -1,0 +1,37 @@
+{
+ "txid": "9947330a1793b6cb964267e6e33ecb3530170e8433caf81a56e8ab2d01ca37a3",
+ "size": 226,
+ "version": 1,
+ "locktime": 0,
+ "fee": 595,
+ "inputs": [
+  {
+   "coinbase": false,
+   "txid": "228dafeb2e043f79e94c93ee47805df8a95265233d474fced769d5fc54e5a079",
+   "output": 0,
+   "value": 127311927,
+   "address": "bitcoincash:qrdd5m5s72wzs4u373ux2fcpn02hw00u7v9wr8cex8"
+  }
+ ],
+ "outputs": [
+  {
+   "address": "bitcoincash:qz8zs4s480v82udw6xdyhc8c6u2zu4uug5dt7th92j",
+   "pkscript": "76a9148e2856153bd87571aed19a4be0f8d7142e579c4588ac",
+   "value": 2644338,
+   "spent": false
+  },
+  {
+   "address": "bitcoincash:qrdd5m5s72wzs4u373ux2fcpn02hw00u7v9wr8cex8",
+   "pkscript": "76a914dada6e90f29c285791f4786527019bd5773dfcf388ac",
+   "value": 124666994,
+   "spent": true
+  }
+ ],
+ "block": {
+  "height": 969755,
+  "position": 96
+ },
+ "deleted": false,
+ "time": 1790111343,
+ "rbf": false
+}

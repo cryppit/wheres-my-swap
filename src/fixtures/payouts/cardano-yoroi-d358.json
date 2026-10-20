@@ -1,0 +1,49 @@
+{
+ "d3582eccd3160f7b5ae63b5f6949718c60c117bbe16a6675b0a225ccb51a8792": {
+  "hash": "d3582eccd3160f7b5ae63b5f6949718c60c117bbe16a6675b0a225ccb51a8792",
+  "fee": "178372",
+  "metadata": null,
+  "valid_contract": true,
+  "script_size": 0,
+  "type": "shelley",
+  "withdrawals": [],
+  "certificates": [],
+  "tx_ordinal": 12,
+  "tx_state": "Successful",
+  "last_update": "2026-10-13T02:49:01.000Z",
+  "block_num": 14061180,
+  "block_hash": "95dbbe9abf7c69b849ab9cfc829aac0ae55dccc97f0f9ea5df2c39f08a3488ad",
+  "time": "2026-10-13T02:49:01.000Z",
+  "epoch": 661,
+  "globalSlot": 200293450,
+  "slot": 104650,
+  "inputs": [
+   {
+    "address": "addr1v8wfpcg4qfhmnzprzysj6j9c53u5j56j8rvhyjp08s53s6g07rfjm",
+    "amount": "1769840104",
+    "id": "3d90a361fcff773b36d0fdc5248cb68641c95afcc096147ab66eb5f542a2cb310",
+    "index": 0,
+    "txHash": "3d90a361fcff773b36d0fdc5248cb68641c95afcc096147ab66eb5f542a2cb31",
+    "assets": [],
+    "inlineDatum": null
+   }
+  ],
+  "collateral_inputs": [],
+  "outputs": [
+   {
+    "address": "addr1qymx87s6vhh0tjmayfyv72u6pk9j8v2ywwx66nxj7fc9f7l2ey7emprdayl88rmeaxc6g8d7wmzxakyzlqppy4hk9r8qv2f6ra",
+    "amount": "525598251",
+    "dataHash": null,
+    "assets": [],
+    "inlineDatum": null
+   },
+   {
+    "address": "addr1v8wfpcg4qfhmnzprzysj6j9c53u5j56j8rvhyjp08s53s6g07rfjm",
+    "amount": "1244063481",
+    "dataHash": null,
+    "assets": [],
+    "inlineDatum": null
+   }
+  ]
+ }
+}

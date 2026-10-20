@@ -1,0 +1,48 @@
+{
+ "jsonrpc": "2.0",
+ "result": {
+  "type": "INVOKE",
+  "transaction_hash": "0x13d7594bc9397277f9c90a2c9fde3c5432051ce2cd69f188dc403baa826f204",
+  "actual_fee": {
+   "amount": "0xb2d388f39dbc80",
+   "unit": "FRI"
+  },
+  "execution_status": "SUCCEEDED",
+  "finality_status": "ACCEPTED_ON_L1",
+  "messages_sent": [],
+  "events": [
+   {
+    "from_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    "keys": [
+     "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9",
+     "0x3b79b882cd0310822ebf3fe2be44a828f8939e699f8fd55a69cd70473f69090",
+     "0x75d0acbffd6fb765047dbdc07f6ea0d39f3bfd123717c9f136d9e97682834af"
+    ],
+    "data": [
+     "0xbd50b109947775754621",
+     "0x0"
+    ]
+   },
+   {
+    "from_address": "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    "keys": [
+     "0x99cd8bde557814842a3121e8ddfd433a539b8c9f14bf31ebf108d12e6196e9",
+     "0x3b79b882cd0310822ebf3fe2be44a828f8939e699f8fd55a69cd70473f69090",
+     "0x1176a1bd84444c89232ec27754698e5d2e7e1a7f1539f12027f28b23ec9f3d8"
+    ],
+    "data": [
+     "0xb2d388f39dbc80",
+     "0x0"
+    ]
+   }
+  ],
+  "execution_resources": {
+   "l1_gas": 0,
+   "l2_gas": 1327040,
+   "l1_data_gas": 192
+  },
+  "block_hash": "0x533832553879219727153a888715c2d844e5681ced2639840a186af699ff0d3",
+  "block_number": 13232841
+ },
+ "id": 1
+}

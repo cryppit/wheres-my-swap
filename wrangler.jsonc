@@ -1,0 +1,18 @@
+// Where's My Swap on Cloudflare Workers: the built pages from dist/ as static assets (served without running the
+// Worker), and worker/index.ts for /api/solana (the page's Solana relay) and /api/health. Deploy with
+// scripts/deploy.sh. The Solana RPC URL is an optional secret (`scripts/wrangler.sh secret put SOLANA_RPC_URL`).
+{
+  "name": "wheres-my-swap",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": false,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true }
+}

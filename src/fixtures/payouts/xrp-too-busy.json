@@ -1,0 +1,7 @@
+{
+ "result": {
+  "error": "tooBusy",
+  "error_code": 9,
+  "error_message": "rate limit: units quota (10000 per 60s) exhausted, retry in ~13017ms"
+ }
+}

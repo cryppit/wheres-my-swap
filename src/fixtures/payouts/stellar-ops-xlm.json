@@ -1,0 +1,37 @@
+{
+ "_embedded": {
+  "records": [
+   {
+    "id": "277827690484092929",
+    "type": "invoke_host_function",
+    "type_i": 24,
+    "created_at": "2026-09-29T22:09:42Z",
+    "transaction_hash": "8cabc84eca799cb393746d1ac4745e5aea0a72d039467517c3c0c7104b229833",
+    "transaction_successful": true,
+    "source_account": "GCQJ7S55OJ3X5Q3B5GVRW4Q5WHUSL47LDUXQKXR7MWSRE7QQITKSEBRQ",
+    "function": "HostFunctionTypeHostFunctionTypeInvokeContract",
+    "asset_balance_changes": [
+     {
+      "asset_type": "native",
+      "type": "transfer",
+      "from": "CCLWL5NYSV2WJQ3VBU44AMDHEVKEPA45N2QP2LL62O3JVKPGWWAQUVAG",
+      "to": "GBQWFPNY6ABL6IFPK43A4ORWNW76XTZLNDSJT54WNSVBNQFL6C7WBSMQ",
+      "amount": "5.5162390"
+     }
+    ],
+    "transaction": {
+     "hash": "8cabc84eca799cb393746d1ac4745e5aea0a72d039467517c3c0c7104b229833",
+     "successful": true,
+     "created_at": "2026-09-29T22:09:42Z",
+     "ledger": 64686800,
+     "source_account": "GCQJ7S55OJ3X5Q3B5GVRW4Q5WHUSL47LDUXQKXR7MWSRE7QQITKSEBRQ",
+     "fee_account": "GCQJ7S55OJ3X5Q3B5GVRW4Q5WHUSL47LDUXQKXR7MWSRE7QQITKSEBRQ",
+     "fee_charged": "220572",
+     "max_fee": "360604",
+     "operation_count": 1,
+     "memo_type": "none"
+    }
+   }
+  ]
+ }
+}

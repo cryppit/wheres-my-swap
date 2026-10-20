@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Where's My Swap</title>
+    <meta name="description" content="Paste a NEAR Intents order and see every hop of your money, read from public chain data. Stuck, late and refunded swaps, named." />
+    <meta name="author" content="Cryppit" />
+    <meta name="theme-color" content="#0F1B5F" />
+    <link rel="canonical" href="%SITE%/" />
+    <meta property="og:title" content="Where's My Swap" />
+    <meta property="og:description" content="Paste a NEAR Intents order and see every hop of your money, read from public chain data. Stuck, late and refunded swaps, named." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Where's My Swap" />
+    <meta property="og:url" content="%SITE%/" />
+    <meta property="og:image" content="%SITE%/img/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="%SITE%/img/og.jpg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+    <link rel="preload" href="/fonts/CabinetGrotesk-Extrabold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./main.ts"></script>
+  </head>
+  <body>
+    <header class="nav">
+      <nav class="wrap" aria-label="Site">
+        <a class="brand" href="/#check"><img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="28" height="28" /><span>Where’s My Swap</span></a>
+        <div class="nav-links">
+          <a class="nav-link opt" href="/#rail">Five places</a>
+          <a class="nav-link opt" href="/#cases">Real orders</a>
+          <a class="nav-link opt2" href="/#wallets">For wallets</a>
+          <a class="nav-link" href="/refund">Stuck BTC or ZEC</a>
+          <a class="nav-link opt" href="/zec">ZEC route</a>
+          <a class="nav-link opt" href="https://wheres-my-swap.station-wheres-my-swap.workers.dev/recorder">Flight Recorder</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="check">
+        <div class="wrap hero-grid">
+          <div>
+            <p class="chip in"><span class="live-dot" aria-hidden="true"></span> Free · read-only · no wallet, no keys</p>
+            <h1 class="h1"><span class="in in-2">Swap stuck?</span><br /><span class="hi in in-3">Find your money.</span></h1>
+            <p class="lede in in-3">Paste the deposit transaction or order from any NEAR Intents swap. We trace every hop across chains from public data, tell you where your money is right now, and show how to get it back.</p>
+            <form class="form in in-4" id="form" aria-label="Check a NEAR Intents swap">
+              <label for="q">Your deposit transaction, order account or NEAR transaction</label>
+              <div class="form-row">
+                <input class="input" id="q" type="text" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="TRON, Bitcoin, Zcash, Solana or EVM tx hash, order account, or NEAR tx" />
+                <button class="check" id="go" type="submit"><span>Check</span><span class="check-arrow" aria-hidden="true">→</span></button>
+              </div>
+            </form>
+            <p class="assets-label">Swaps between 100+ assets on 30+ chains, such as</p>
+            <div class="assets" aria-label="Some of the assets NEAR Intents swaps">
+              <ul class="assets-track" id="assets"></ul>
+            </div>
+          </div>
+
+          <figure class="demo" aria-label="How a check reads: an illustration, not a real order">
+            <span class="demo-beam" aria-hidden="true"></span>
+            <div class="demo-head">
+              <span class="eyebrow">How a check reads</span>
+              <span class="demo-tag">Illustration · not a real order</span>
+            </div>
+            <div class="route" aria-hidden="true">
+              <span class="node"><span class="node-sym">BTC</span><span class="node-chain">Bitcoin</span></span>
+              <span class="wire"></span>
+              <span class="node mid"><span class="node-sym">NEAR</span><span class="node-chain">Intents</span></span>
+              <span class="wire"></span>
+              <span class="node"><span class="node-sym">USDC</span><span class="node-chain">Solana</span></span>
+            </div>
+            <ol class="demo-hops">
+              <li class="dhop"><span class="dhop-n">1</span><span><span class="dhop-title">Deposit seen on Bitcoin</span><span class="dhop-note">found by its transaction hash</span></span></li>
+              <li class="dhop"><span class="dhop-n">2</span><span><span class="dhop-title">Credited on NEAR</span><span class="dhop-note">to the order's deposit account</span></span></li>
+              <li class="dhop"><span class="dhop-n">3</span><span><span class="dhop-title">Swapped BTC → USDC</span><span class="dhop-note">a solver filled the intent</span></span></li>
+              <li class="dhop"><span class="dhop-n">4</span><span><span class="dhop-title">Paid out on Solana</span><span class="dhop-note">matched to the transfer on that chain</span></span></li>
+            </ol>
+            <figcaption class="demo-foot"><b>Delivered.</b> Every hop checked against public chain data.</figcaption>
+          </figure>
+        </div>
+
+        <div class="wrap">
+          <div class="results" id="out" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="strip" aria-label="Live from chain data">
+        <div class="wrap">
+          <div class="cell">
+            <span class="cell-label"><span class="live-dot" aria-hidden="true"></span> NEAR mainnet</span>
+            <span class="cell-value" id="block">reading…</span>
+            <span class="cell-sub" id="block-sub">latest final block</span>
+          </div>
+          <a class="cell" href="/refund">
+            <span class="cell-label">Refunds ready, nobody executed</span>
+            <span class="cell-value hi" id="ready">reading…</span>
+            <span class="cell-sub" id="ready-sub">on the Omni BTC and ZEC bridges →</span>
+          </a>
+          <div class="cell">
+            <span class="cell-label">Payouts checked on</span>
+            <span class="cell-value">33 chains</span>
+            <span class="cell-sub">of the 37 NEAR Intents pays out on</span>
+          </div>
+          <div class="cell">
+            <span class="cell-label">Keys we hold</span>
+            <span class="cell-value">0</span>
+            <span class="cell-sub">read-only, in your browser</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="rail">
+        <div class="wrap">
+          <p class="eyebrow">The route</p>
+          <h2 class="mt">Five places your money can be</h2>
+          <ol class="rail">
+            <li><span class="stop">1</span><div><p class="eyebrow">1 / 5 · <b>proven</b></p><h3>Origin</h3><p class="body">The transaction on the chain you paid from, named by the bridge deposit or the bridge's own record of the address you paid.</p></div></li>
+            <li><span class="stop">2</span><div><p class="eyebrow">2 / 5 · <b>proven</b></p><h3>Credit on NEAR</h3><p class="body">Your tokens minted inside intents.near, into an account made for this order. From here only 1Click can move them.</p></div></li>
+            <li><span class="stop">3</span><div><p class="eyebrow">3 / 5 · <b>proven</b></p><h3>Swap</h3><p class="body">The intent that exchanged what you sent for what you asked, solver by solver, with the app's referral tag.</p></div></li>
+            <li><span class="stop">4</span><div><p class="eyebrow">4 / 5 · <b>proven</b></p><h3>Withdrawal</h3><p class="body">The burn that sends the result out, with the destination address it names.</p></div></li>
+            <li><span class="stop">5</span><div><p class="eyebrow">5 / 5 · <b>confirmed · matched · recorded</b></p><h3>Payout</h3><p class="body">The transfer on the destination chain, on 33 chains. When the bridge names its payout, we read that transaction there and see who sent it. Where we can search the history, we find the one that fits even with no bridge record. Where the bridge's indexer lags, its own contract on the destination can say it was paid.</p></div></li>
+          </ol>
+          <div class="end"><a class="cta" href="#check">Where is yours? Check it <span aria-hidden="true">↑</span></a></div>
+        </div>
+      </section>
+
+      <section class="section cases" id="cases">
+        <div class="wrap">
+          <h2>Three real orders</h2>
+          <p class="lede">Public incidents from the NEAR Intents and 1Click issue trackers, traced live from chain data. Open one and the checker runs it for you.</p>
+          <div class="case-grid">
+            <a class="case large" href="#q=ee2f4930664176ee020763c9e81457b9c3050ce1c3ff9f2e4c72e9f3f525cbe6">
+              <img class="case-crop" src="/img/case-line.jpg" alt="" loading="lazy" width="900" height="643" />
+              <span class="case-amount">575,830<span class="case-unit">TRX</span></span>
+              <span class="case-caption">settled 16 days late</span>
+              <span class="case-go">Trace it →</span>
+            </a>
+            <div class="case-stack">
+              <a class="case" href="#q=26b9cc669c90eae37285e4c52c35e0fc814314b2a6566250329a8ad497acb5fb">
+                <span class="case-amount">48.28<span class="case-unit">ETH</span></span>
+                <span class="case-caption">stuck since April</span>
+                <span class="case-go">Trace it →</span>
+              </a>
+              <a class="case" href="#q=2ocGRvar61bJDjjP82JWcfdpVpbWp1q2snx6oeKLjQB7">
+                <span class="case-amount">49,599<span class="case-unit">USDT</span></span>
+                <span class="case-caption">a refund reported as SUCCESS</span>
+                <span class="case-go">Trace it →</span>
+              </a>
+            </div>
+          </div>
+          <p class="note">Sources: near/intents #358 (since deleted; the trace is on chain), <a class="ext" href="https://github.com/defuse-protocol/one-click-sdk-typescript/issues/6" target="_blank" rel="noopener noreferrer">one-click-sdk-typescript #6</a> and <a class="ext" href="https://github.com/defuse-protocol/one-click-sdk-typescript/issues/20" target="_blank" rel="noopener noreferrer">#20</a>.</p>
+        </div>
+      </section>
+
+      <section class="section band" aria-label="Stuck Bitcoin or Zcash">
+        <div class="wrap band-grid">
+          <div>
+            <p class="eyebrow">Stuck Bitcoin or Zcash</p>
+            <h2 class="mt">The bridge has a way back. Most people never find it.</h2>
+            <p class="lede">A BTC or ZEC deposit the bridge never credited can be refunded through the bridge’s own contract, to the wallet it came from. Paste your transaction; we show where it stands and every step left.</p>
+            <p class="mt-cta"><a class="cta" href="/refund">Check a deposit <span aria-hidden="true">→</span></a></p>
+          </div>
+          <div class="glass" id="waiting" aria-live="polite">
+            <p class="eyebrow">Right now, on chain</p>
+            <p class="say">Reading the bridge contracts…</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="proven">
+        <div class="wrap proven-grid">
+          <div>
+            <h2>What proven means</h2>
+            <dl class="terms">
+              <dt>Proven</dt>
+              <dd>Both sides record the same key. The bridge deposit names the origin transaction; the NEAR receipts name the account, the token, the amount and the destination.</dd>
+              <dt>Confirmed</dt>
+              <dd>The bridge names the payout transaction, and we read it on its own chain paying your address: the bridge's report, checked against that chain. This is how payouts are checked on 33 chains, from Bitcoin and Solana to TON, XRP and Starknet.</dd>
+              <dt>Matched</dt>
+              <dd>No bridge record yet, so we search the destination's history (Ethereum, Optimism, Gnosis, Bitcoin, Solana and TRON) for the one transfer that fits the amount, less the bridge fee, and the time. PoA payouts come from a custodial wallet with no on-chain link back, so that is a match, not a proof.</dd>
+              <dt>Recorded</dt>
+              <dd>The Omni bridge's indexer has not named the payout yet, but the bridge's own contract on the destination chain records the transfer as paid. It sets that mark only in a payout that checked the bridge's signature and paid the signed recipient.</dd>
+              <dt>Shielded</dt>
+              <dd>A Zcash payout into a shielded pool: the transaction the bridge names is confirmed on Zcash and moved the withdrawal, less fees, into that pool.</dd>
+              <dt>Unverified</dt>
+              <dd>A hop we could not check: a chain we cannot read yet (Movement, Aleo, Quantus, Fogo), or a source that did not answer. We say why instead of guessing.</dd>
+              <dt>Stuck</dt>
+              <dd>Funds credited to the order account with no intent executed for over an hour. Most swaps settle in seconds.</dd>
+              <dt>Refunded</dt>
+              <dd>The deposited token left the account without a swap. Status APIs sometimes report these as successes.</dd>
+            </dl>
+          </div>
+          <img class="art" src="/img/bridges.jpg" alt="Strings of light between glowing posts over black water, one path lit lime" loading="lazy" width="1600" height="893" />
+        </div>
+      </section>
+
+      <section class="section wallets" id="wallets">
+        <div class="wrap narrow">
+          <p class="eyebrow">Flight Recorder</p>
+          <h2>For wallets and apps that route through NEAR Intents</h2>
+          <p class="lede">Your support team gets the ticket and cannot see inside the machine either. Flight Recorder watches every order you route, alerts you when one stalls or refunds, and hands you the trace.</p>
+          <dl class="stats">
+            <div><dt>48 of 50</dt><dd>orders followed end to end (15 on exact keys, 33 matched by amount and time)</dd></div>
+            <div><dt>2,850 of 2,850</dt><dd>swap batches netting to the fee</dd></div>
+            <div><dt>3 of 3</dt><dd>public incidents caught</dd></div>
+          </dl>
+          <p class="note">From our tracing run of 2026-10-04 on public data: a two-hour window of NEAR mainnet and 50 sampled orders across Bitcoin, Ethereum, Solana, TRON and NEAR.</p>
+          <a class="pilot" href="https://wheres-my-swap.station-wheres-my-swap.workers.dev/recorder"><i></i><i></i><i></i><i></i>Request a pilot</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer" id="contact">
+      <div class="wrap">
+        <p class="footer-lead">Independent of NEAR Intents and its integrators. Public data, read in your browser. The checker stores nothing.</p>
+        <div class="footer-grid">
+          <img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="40" height="40" loading="lazy" />
+          <div>
+            <h4>Tool</h4>
+            <ul>
+              <li><a class="ext" href="/#check">Check an order</a></li>
+              <li><a class="ext" href="/#rail">Five places your money can be</a></li>
+              <li><a class="ext" href="/refund">Stuck BTC or ZEC</a></li>
+              <li><a class="ext" href="https://wheres-my-swap.station-wheres-my-swap.workers.dev/recorder">Flight Recorder</a></li>
+              <li><a class="ext" href="https://t.me/WheresMySwap_Bot" target="_blank" rel="noopener noreferrer">Telegram bot</a></li>
+              <li><a class="ext" href="/#proven">What proven means</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Cryppit</h4>
+            <ul>
+              <li>A research desk that watches crypto markets and writes down what it can prove.</li>
+              <li>Pilot requests: contact details follow once our handles are live.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Data</h4>
+            <ul>
+              <li><a class="ext" href="https://tx.main.fastnear.com" target="_blank" rel="noopener noreferrer">FastNEAR Transactions API</a></li>
+              <li><a class="ext" href="https://github.com/near/intents" target="_blank" rel="noopener noreferrer">NEAR Intents on GitHub</a></li>
+              <li>Not financial advice. Not affiliated with NEAR.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="small">Cryppit, 2026 · Display type: Cabinet Grotesk by the Indian Type Foundry.</p>
+      </div>
+    </footer>
+  </body>
+</html>

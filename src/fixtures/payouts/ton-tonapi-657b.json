@@ -1,0 +1,52 @@
+{
+ "hash": "657bc6285b3ffa3fa045166813dca24baddc2d2101b07b1576e517a31b8e3409",
+ "lt": 109660328000037,
+ "account": {
+  "address": "0:35e07bd742d68ea279119c55b412d53d949aac1803b3b28f09cf330d4f3fec64",
+  "is_scam": false,
+  "is_wallet": true
+ },
+ "success": true,
+ "utime": 1791881320,
+ "orig_status": "active",
+ "end_status": "active",
+ "total_fees": 37991,
+ "transaction_type": "TransOrd",
+ "aborted": false,
+ "destroyed": false,
+ "block": "(0,8000000000000000,103302516)",
+ "in_msg": {
+  "msg_type": "int_msg",
+  "created_lt": 109660328000036,
+  "bounce": false,
+  "bounced": false,
+  "value": 678060479,
+  "fwd_fee": 44446,
+  "created_at": 1791881320,
+  "source": {
+   "address": "0:0d11588cdc0290ce2e808f7b047b2a85bbca57aa1cbd43dc46a0877fd2aa7708",
+   "name": "near-intents-1.ton",
+   "is_scam": false,
+   "is_wallet": false
+  },
+  "destination": {
+   "address": "0:35e07bd742d68ea279119c55b412d53d949aac1803b3b28f09cf330d4f3fec64",
+   "is_scam": false,
+   "is_wallet": true
+  }
+ },
+ "out_msgs": [],
+ "compute_phase": {
+  "skipped": false,
+  "success": true,
+  "gas_fees": 36401,
+  "gas_used": 546,
+  "vm_steps": 12,
+  "exit_code": 0,
+  "exit_code_description": "Ok"
+ },
+ "credit_phase": {
+  "fees_collected": 0,
+  "credit": 678060479
+ }
+}

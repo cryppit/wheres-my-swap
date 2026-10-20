@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZEC route · Where's My Swap</title>
+    <meta name="description" content="Are ZEC payouts from NEAR Intents reaching Zcash? The newest withdrawals, each checked on the Zcash chain, live from public data." />
+    <meta name="author" content="Cryppit" />
+    <meta name="theme-color" content="#0F1B5F" />
+    <link rel="canonical" href="%SITE%/zec" />
+    <meta property="og:title" content="Are ZEC payouts from NEAR Intents arriving? · Where's My Swap" />
+    <meta property="og:description" content="Are ZEC payouts from NEAR Intents reaching Zcash? The newest withdrawals, each checked on the Zcash chain, live from public data." />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Where's My Swap" />
+    <meta property="og:url" content="%SITE%/zec" />
+    <meta property="og:image" content="%SITE%/img/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="%SITE%/img/og.jpg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+    <link rel="preload" href="/fonts/CabinetGrotesk-Extrabold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./zec.ts"></script>
+  </head>
+  <body>
+    <header class="nav">
+      <nav class="wrap narrow" aria-label="Site">
+        <a class="brand" href="/"><img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="28" height="28" /><span>Where’s My Swap</span></a>
+        <span class="nav-tag">ZEC route</span>
+      </nav>
+    </header>
+
+    <main class="page">
+      <div class="wrap narrow">
+        <section>
+          <p class="eyebrow">Live, from public data</p>
+          <h1>Are ZEC payouts from NEAR Intents arriving?</h1>
+          <p class="lede">A swap that pays out in ZEC leaves NEAR Intents as a withdrawal through the Omni Zcash bridge. This page reads the newest of those withdrawals from NEAR and checks each payout on the Zcash chain, the same way the checker checks one order.</p>
+          <div class="results" id="route" aria-live="polite"><p class="status-line">Reading the newest ZEC withdrawals…</p></div>
+          <p class="note">Waiting for a ZEC payout of your own? <a class="ext" href="/">Paste your transaction or order account</a> to trace it. Sent ZEC into the Omni bridge and it never arrived? <a class="ext" href="/refund">Check it here</a>.</p>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="wrap narrow">
+        <p class="footer-lead">Read-only. We never hold keys or sign anything, and nothing on this page is stored.</p>
+        <p class="small"><a class="ext" href="/">Where’s My Swap</a> · <a class="ext" href="https://t.me/WheresMySwap_Bot" target="_blank" rel="noopener noreferrer">Telegram bot</a> · Not financial advice. Not affiliated with NEAR, Intents Technology or any wallet. · Cryppit, 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>

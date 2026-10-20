@@ -1,0 +1,39 @@
+{
+ "_embedded": {
+  "records": [
+   {
+    "id": "278837561849118721",
+    "type": "invoke_host_function",
+    "type_i": 24,
+    "created_at": "2026-10-13T12:43:47Z",
+    "transaction_hash": "fb2a6d5919d9d5d8cad2f461bd49d546de2d741f8e4858c5eaa8eba014e25412",
+    "transaction_successful": true,
+    "source_account": "GCQJ7S55OJ3X5Q3B5GVRW4Q5WHUSL47LDUXQKXR7MWSRE7QQITKSEBRQ",
+    "function": "HostFunctionTypeHostFunctionTypeInvokeContract",
+    "asset_balance_changes": [
+     {
+      "asset_type": "credit_alphanum4",
+      "asset_code": "USDC",
+      "asset_issuer": "GA5ZSEJYB37JRC5AVCIA5MOP4RHTM335X2KGX3IHOJAPP5RE34K4KZVN",
+      "type": "transfer",
+      "from": "CCLWL5NYSV2WJQ3VBU44AMDHEVKEPA45N2QP2LL62O3JVKPGWWAQUVAG",
+      "to": "GC5VFZAIWBHRZZWCW6YEBBAZDIKLCOHTPB6AQ7YXDUAHENZ3V6FO7EYT",
+      "amount": "1.6608561"
+     }
+    ],
+    "transaction": {
+     "hash": "fb2a6d5919d9d5d8cad2f461bd49d546de2d741f8e4858c5eaa8eba014e25412",
+     "successful": true,
+     "created_at": "2026-10-13T12:43:47Z",
+     "ledger": 64921929,
+     "source_account": "GCQJ7S55OJ3X5Q3B5GVRW4Q5WHUSL47LDUXQKXR7MWSRE7QQITKSEBRQ",
+     "fee_account": "GCQJ7S55OJ3X5Q3B5GVRW4Q5WHUSL47LDUXQKXR7MWSRE7QQITKSEBRQ",
+     "fee_charged": "221005",
+     "max_fee": "361076",
+     "operation_count": 1,
+     "memo_type": "none"
+    }
+   }
+  ]
+ }
+}

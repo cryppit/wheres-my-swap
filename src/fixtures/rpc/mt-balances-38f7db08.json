@@ -1,0 +1,1 @@
+{"id":"wms","jsonrpc":"2.0","note":"Requests without an API key are being slowed down for one second. Get an API key at https://rainy.intea.rs for faster response times.","result":{"block_hash":"8LvS9PHrRdffJp2SosWPUDXLH7pcmgEw4EwkewG74xo2","block_height":219921623,"logs":[],"result":[91,34,49,51,48,48,34,93]}}

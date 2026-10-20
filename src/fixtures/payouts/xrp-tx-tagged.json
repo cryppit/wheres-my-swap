@@ -1,0 +1,63 @@
+{
+ "result": {
+  "Account": "r9R8jciZBYGq32DxxQrBPi5ysZm67iQitH",
+  "Amount": "100001",
+  "DeliverMax": "100001",
+  "Destination": "rNxp4h8apvRis6mJf9Sh8C6iRxfrDWN7AV",
+  "DestinationTag": 419084126,
+  "Fee": "10",
+  "Sequence": 92727372,
+  "TransactionType": "Payment",
+  "ctid": "C586F0CF00120000",
+  "date": 787356280,
+  "hash": "0157C902C5791B8E7D900F32A786637F8C2C31C2F24119C03FA9C665E72202BE",
+  "inLedger": 92729551,
+  "ledger_index": 92729551,
+  "status": "success",
+  "validated": true,
+  "meta": {
+   "AffectedNodes": [
+    {
+     "ModifiedNode": {
+      "FinalFields": {
+       "Account": "rNxp4h8apvRis6mJf9Sh8C6iRxfrDWN7AV",
+       "Balance": "245898909266",
+       "Flags": 0,
+       "OwnerCount": 0,
+       "Sequence": 77309348
+      },
+      "LedgerEntryType": "AccountRoot",
+      "LedgerIndex": "59EDFBD7E3AA8EF84600C7AABD24DBC8229C19A1FF956C83D6B04390CF7C7E34",
+      "PreviousFields": {
+       "Balance": "245898809265"
+      },
+      "PreviousTxnID": "5355C5708DC3A08A9D5E2D1A0151B5275EC7582025F0D517CAC347A8316FB13F",
+      "PreviousTxnLgrSeq": 92729550
+     }
+    },
+    {
+     "ModifiedNode": {
+      "FinalFields": {
+       "Account": "r9R8jciZBYGq32DxxQrBPi5ysZm67iQitH",
+       "Balance": "2119905",
+       "Flags": 0,
+       "OwnerCount": 0,
+       "Sequence": 92727373
+      },
+      "LedgerEntryType": "AccountRoot",
+      "LedgerIndex": "5A4728CF12D7D62D4C72CE27B11C6A107E69032E4084C4DCDE9044772616AA2D",
+      "PreviousFields": {
+       "Balance": "2219916",
+       "Sequence": 92727372
+      },
+      "PreviousTxnID": "5C9BFB0D965EDD6379DE354293B26CF1294EB6A1576805CA6EE89E2BFB8C83A3",
+      "PreviousTxnLgrSeq": 92729542
+     }
+    }
+   ],
+   "TransactionIndex": 18,
+   "TransactionResult": "tesSUCCESS",
+   "delivered_amount": "100001"
+  }
+ }
+}

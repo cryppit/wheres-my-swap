@@ -1,0 +1,62 @@
+{
+ "result": {
+  "Account": "r9R8jciZBYGq32DxxQrBPi5ysZm67iQitH",
+  "Amount": "1087362",
+  "DeliverMax": "1087362",
+  "Destination": "rs3GBtMc64SCz4XkgsEKx2a3a6CWFX3gga",
+  "Fee": "10",
+  "Sequence": 92838878,
+  "TransactionType": "Payment",
+  "ctid": "C66A662700350000",
+  "date": 845240871,
+  "hash": "9382C01697F6E0E7A98648797874750F71EFF575A152E5175D8A81A15EA0862A",
+  "inLedger": 107636263,
+  "ledger_index": 107636263,
+  "status": "success",
+  "validated": true,
+  "meta": {
+   "AffectedNodes": [
+    {
+     "ModifiedNode": {
+      "FinalFields": {
+       "Account": "r9R8jciZBYGq32DxxQrBPi5ysZm67iQitH",
+       "Balance": "661749856129",
+       "Flags": 0,
+       "OwnerCount": 0,
+       "Sequence": 92838879
+      },
+      "LedgerEntryType": "AccountRoot",
+      "LedgerIndex": "5A4728CF12D7D62D4C72CE27B11C6A107E69032E4084C4DCDE9044772616AA2D",
+      "PreviousFields": {
+       "Balance": "661750943501",
+       "Sequence": 92838878
+      },
+      "PreviousTxnID": "BAD19DB5835E9CECF1A0CCC89478CF618D45B55AA2D7B0AD5F3F619B7089A9EE",
+      "PreviousTxnLgrSeq": 107636243
+     }
+    },
+    {
+     "ModifiedNode": {
+      "FinalFields": {
+       "Account": "rs3GBtMc64SCz4XkgsEKx2a3a6CWFX3gga",
+       "Balance": "2087364",
+       "Flags": 0,
+       "OwnerCount": 0,
+       "Sequence": 105379274
+      },
+      "LedgerEntryType": "AccountRoot",
+      "LedgerIndex": "C9998092F5EA83EEE7463C1DA23D9E6C8370C32D5107C25FBF264A7D5C5D125A",
+      "PreviousFields": {
+       "Balance": "1000002"
+      },
+      "PreviousTxnID": "5549D5C6D2414496F8E02203A6321E00580352BA242596AB3912A0131563D0D7",
+      "PreviousTxnLgrSeq": 105379369
+     }
+    }
+   ],
+   "TransactionIndex": 53,
+   "TransactionResult": "tesSUCCESS",
+   "delivered_amount": "1087362"
+  }
+ }
+}

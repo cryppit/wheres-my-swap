@@ -1,0 +1,161 @@
+{
+ "type": "user_transaction",
+ "hash": "0xc06facd30fcbea76cd28ea4a2d0b3e27b6140addcc80d46f0c9be318b8c75044",
+ "version": "3062738824",
+ "success": true,
+ "vm_status": "Executed successfully",
+ "sender": "0xd1a1c1804e91ba85a569c7f018bb7502d2f13d4742d2611953c9c14681af6446",
+ "sequence_number": "1",
+ "timestamp": "1752570024785846",
+ "gas_used": "10",
+ "gas_unit_price": "100",
+ "payload": {
+  "function": "0x1::aptos_account::transfer_coins",
+  "type_arguments": [
+   "0x1::aptos_coin::AptosCoin"
+  ],
+  "arguments": [
+   "0x4ba0566130ebbc479129a04ed655fc3f8a0f788ec5fadd9bd59fee32ca88cd61",
+   "1500000"
+  ],
+  "type": "entry_function_payload"
+ },
+ "events": [
+  {
+   "guid": {
+    "creation_number": "3",
+    "account_address": "0xd1a1c1804e91ba85a569c7f018bb7502d2f13d4742d2611953c9c14681af6446"
+   },
+   "sequence_number": "0",
+   "type": "0x1::coin::WithdrawEvent",
+   "data": {
+    "amount": "1500000"
+   }
+  },
+  {
+   "guid": {
+    "creation_number": "2",
+    "account_address": "0x4ba0566130ebbc479129a04ed655fc3f8a0f788ec5fadd9bd59fee32ca88cd61"
+   },
+   "sequence_number": "3",
+   "type": "0x1::coin::DepositEvent",
+   "data": {
+    "amount": "1500000"
+   }
+  },
+  {
+   "guid": {
+    "creation_number": "0",
+    "account_address": "0x0"
+   },
+   "sequence_number": "0",
+   "type": "0x1::transaction_fee::FeeStatement",
+   "data": {
+    "execution_gas_units": "5",
+    "io_gas_units": "5",
+    "storage_fee_octas": "0",
+    "storage_fee_refund_octas": "0",
+    "total_charge_gas_units": "10"
+   }
+  }
+ ],
+ "changes": [
+  {
+   "type": "write_resource",
+   "address": "0x107b277f8ac97230f1e53cf3661b3f05a40c5a02d1d2b74fe77826b62b4d1c43",
+   "state_key_hash": "0x914f07310a410be107d6d81296b86e717137431196c9a65ee7183abfcfa7307f",
+   "data": {
+    "type": "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>",
+    "data": {
+     "coin": {
+      "value": "3022635500"
+     },
+     "deposit_events": {
+      "counter": "3",
+      "guid": {
+       "id": {
+        "addr": "0x107b277f8ac97230f1e53cf3661b3f05a40c5a02d1d2b74fe77826b62b4d1c43",
+        "creation_num": "2"
+       }
+      }
+     },
+     "frozen": false,
+     "withdraw_events": {
+      "counter": "0",
+      "guid": {
+       "id": {
+        "addr": "0x107b277f8ac97230f1e53cf3661b3f05a40c5a02d1d2b74fe77826b62b4d1c43",
+        "creation_num": "3"
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "write_resource",
+   "address": "0x4ba0566130ebbc479129a04ed655fc3f8a0f788ec5fadd9bd59fee32ca88cd61",
+   "state_key_hash": "0x152615448191b4ef5bf8bca4ad385549802fb4bff4ae34a1e26e06f2349f8c77",
+   "data": {
+    "type": "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>",
+    "data": {
+     "coin": {
+      "value": "3736178"
+     },
+     "deposit_events": {
+      "counter": "4",
+      "guid": {
+       "id": {
+        "addr": "0x4ba0566130ebbc479129a04ed655fc3f8a0f788ec5fadd9bd59fee32ca88cd61",
+        "creation_num": "2"
+       }
+      }
+     },
+     "frozen": false,
+     "withdraw_events": {
+      "counter": "84",
+      "guid": {
+       "id": {
+        "addr": "0x4ba0566130ebbc479129a04ed655fc3f8a0f788ec5fadd9bd59fee32ca88cd61",
+        "creation_num": "3"
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "write_resource",
+   "address": "0xd1a1c1804e91ba85a569c7f018bb7502d2f13d4742d2611953c9c14681af6446",
+   "state_key_hash": "0x88b76a2cfb4d33a4dc189b4a06e4955983cc5ac751a84e2d15fb7dea95a74b52",
+   "data": {
+    "type": "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>",
+    "data": {
+     "coin": {
+      "value": "3019410000"
+     },
+     "deposit_events": {
+      "counter": "5",
+      "guid": {
+       "id": {
+        "addr": "0xd1a1c1804e91ba85a569c7f018bb7502d2f13d4742d2611953c9c14681af6446",
+        "creation_num": "2"
+       }
+      }
+     },
+     "frozen": false,
+     "withdraw_events": {
+      "counter": "1",
+      "guid": {
+       "id": {
+        "addr": "0xd1a1c1804e91ba85a569c7f018bb7502d2f13d4742d2611953c9c14681af6446",
+        "creation_num": "3"
+       }
+      }
+     }
+    }
+   }
+  }
+ ],
+ "_trimmed": "changes: only write_resource ObjectCore / FungibleStore / CoinStore kept; signature, hashes and other changes dropped"
+}

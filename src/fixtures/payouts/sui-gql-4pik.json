@@ -1,0 +1,57 @@
+{
+ "data": {
+  "transaction": {
+   "digest": "4pikGmBuhBsiPUVv2C4DuQv7sBmNvte3oSY2vq17WqKV",
+   "sender": {
+    "address": "0x00ea18889868519abd2f238966cab9875750bb2859ed3a34debec37781520138"
+   },
+   "gasInput": {
+    "gasSponsor": {
+     "address": "0x1f6cd55584e6d0c19ae34bfc48b1bd9b1b8a166987e34052cfea7f3c795c6d76"
+    }
+   },
+   "effects": {
+    "status": "SUCCESS",
+    "timestamp": "2026-10-13T20:29:09.137Z",
+    "checkpoint": {
+     "sequenceNumber": 333672752
+    },
+    "balanceChanges": {
+     "pageInfo": {
+      "hasNextPage": false,
+      "endCursor": "Mg=="
+     },
+     "nodes": [
+      {
+       "owner": {
+        "address": "0x00ea18889868519abd2f238966cab9875750bb2859ed3a34debec37781520138"
+       },
+       "coinType": {
+        "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI"
+       },
+       "amount": "-50221791199"
+      },
+      {
+       "owner": {
+        "address": "0x1f6cd55584e6d0c19ae34bfc48b1bd9b1b8a166987e34052cfea7f3c795c6d76"
+       },
+       "coinType": {
+        "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI"
+       },
+       "amount": "-1088198"
+      },
+      {
+       "owner": {
+        "address": "0xe52497c434f1ea35b3e0d282691c927fb92d8b0785a7bd8000da8ad9198e3bba"
+       },
+       "coinType": {
+        "repr": "0x0000000000000000000000000000000000000000000000000000000000000002::sui::SUI"
+       },
+       "amount": "50221791199"
+      }
+     ]
+    }
+   }
+  }
+ }
+}

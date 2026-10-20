@@ -1,0 +1,235 @@
+{
+ "type": "user_transaction",
+ "hash": "0xb4b44dc4e6d7979702bfcaff2d17c378ac5bfab901985fc5860c456bf6827caf",
+ "version": "7594262965",
+ "success": true,
+ "vm_status": "Executed successfully",
+ "sender": "0xd8ccdb46922efc8b7fb8aa1eaffa02f0ec6d4d6efcd58b5097b4dc67655e9b49",
+ "sequence_number": "3091",
+ "timestamp": "1791881216200383",
+ "gas_used": "5536",
+ "gas_unit_price": "100",
+ "payload": {
+  "function": "0xe4ec15f237e5a8c7daa7a34ece28e2bd2c079360763f181bf65862ec148b914a::omni_bridge::fin_transfer",
+  "type_arguments": [],
+  "arguments": [
+   "0x2fa505e5887f8667babeff9cef4f34f75d064b49be950218f3455c3d5b42c3ed3f5a2e2074e6d7541d1d5d690973a57c970917a0f0c7e1d69545bfa0be2ed77a",
+   28,
+   "3060",
+   1,
+   "640017",
+   "0xa",
+   "6399381617",
+   "0x7d1858e4915dcb7ec382edda0f40a47a2add06349a3feb3f68e50c4d53bea9c5",
+   {
+    "vec": [
+     "omni-relayer.bridge.near"
+    ]
+   },
+   {
+    "vec": []
+   }
+  ],
+  "type": "entry_function_payload"
+ },
+ "events": [
+  {
+   "guid": {
+    "creation_number": "0",
+    "account_address": "0x0"
+   },
+   "sequence_number": "0",
+   "type": "0x1::fungible_asset::Withdraw",
+   "data": {
+    "amount": "6399381617",
+    "store": "0x6491826cc73a15fab80439b308a628781285f609a61a10197a770119355b4e02"
+   }
+  },
+  {
+   "guid": {
+    "creation_number": "0",
+    "account_address": "0x0"
+   },
+   "sequence_number": "0",
+   "type": "0x1::fungible_asset::Deposit",
+   "data": {
+    "amount": "6399381617",
+    "store": "0xd0489737abdec2621409325511bc8a24376316a1bcf7a28e685ba65149a00f69"
+   }
+  },
+  {
+   "guid": {
+    "creation_number": "0",
+    "account_address": "0x0"
+   },
+   "sequence_number": "0",
+   "type": "0xe4ec15f237e5a8c7daa7a34ece28e2bd2c079360763f181bf65862ec148b914a::omni_bridge::FinTransfer",
+   "data": {
+    "amount": "6399381617",
+    "fee_recipient": {
+     "vec": [
+      "omni-relayer.bridge.near"
+     ]
+    },
+    "message": {
+     "vec": []
+    },
+    "origin_chain": 1,
+    "origin_nonce": "640017",
+    "recipient": "0x7d1858e4915dcb7ec382edda0f40a47a2add06349a3feb3f68e50c4d53bea9c5",
+    "token_address": "0xa"
+   }
+  },
+  {
+   "guid": {
+    "creation_number": "0",
+    "account_address": "0x0"
+   },
+   "sequence_number": "0",
+   "type": "0x1::transaction_fee::FeeStatement",
+   "data": {
+    "execution_gas_units": "129",
+    "io_gas_units": "84",
+    "storage_fee_octas": "532400",
+    "storage_fee_refund_octas": "0",
+    "total_charge_gas_units": "5536"
+   }
+  }
+ ],
+ "changes": [
+  {
+   "type": "write_resource",
+   "address": "0xa",
+   "state_key_hash": "0x1db5441d8fa4229c5844f73fd66da4ad8176cb8793d8b3a7f6ca858722030043",
+   "data": {
+    "type": "0x1::object::ObjectCore",
+    "data": {
+     "allow_ungated_transfer": true,
+     "guid_creation_num": "1125899906842625",
+     "owner": "0x1",
+     "transfer_events": {
+      "counter": "0",
+      "guid": {
+       "id": {
+        "addr": "0xa",
+        "creation_num": "1125899906842624"
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "write_resource",
+   "address": "0x152a0b4cead37d8de691a31d82afed5b39ab9d3196b2f96d4418d4cea763428b",
+   "state_key_hash": "0x835457c8c37e1731d58c9ca06bcabf13abd60d1251aedc29cccd8a2c90ce6462",
+   "data": {
+    "type": "0x1::fungible_asset::FungibleStore",
+    "data": {
+     "balance": "3756226737",
+     "frozen": false,
+     "metadata": {
+      "inner": "0xa"
+     }
+    }
+   }
+  },
+  {
+   "type": "write_resource",
+   "address": "0x152a0b4cead37d8de691a31d82afed5b39ab9d3196b2f96d4418d4cea763428b",
+   "state_key_hash": "0x835457c8c37e1731d58c9ca06bcabf13abd60d1251aedc29cccd8a2c90ce6462",
+   "data": {
+    "type": "0x1::object::ObjectCore",
+    "data": {
+     "allow_ungated_transfer": false,
+     "guid_creation_num": "1125899906842625",
+     "owner": "0xd8ccdb46922efc8b7fb8aa1eaffa02f0ec6d4d6efcd58b5097b4dc67655e9b49",
+     "transfer_events": {
+      "counter": "0",
+      "guid": {
+       "id": {
+        "addr": "0x152a0b4cead37d8de691a31d82afed5b39ab9d3196b2f96d4418d4cea763428b",
+        "creation_num": "1125899906842624"
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "write_resource",
+   "address": "0x6491826cc73a15fab80439b308a628781285f609a61a10197a770119355b4e02",
+   "state_key_hash": "0xcec1dfc3a179d4226d782e84ef91785ab95d356e113a2f463c1ce06f2fda2d3d",
+   "data": {
+    "type": "0x1::fungible_asset::FungibleStore",
+    "data": {
+     "balance": "11042929797132",
+     "frozen": false,
+     "metadata": {
+      "inner": "0xa"
+     }
+    }
+   }
+  },
+  {
+   "type": "write_resource",
+   "address": "0x6491826cc73a15fab80439b308a628781285f609a61a10197a770119355b4e02",
+   "state_key_hash": "0xcec1dfc3a179d4226d782e84ef91785ab95d356e113a2f463c1ce06f2fda2d3d",
+   "data": {
+    "type": "0x1::object::ObjectCore",
+    "data": {
+     "allow_ungated_transfer": false,
+     "guid_creation_num": "1125899906842625",
+     "owner": "0xa59a7ff96828c69ddeebeece16fffd4bc9ee22a3fe542f3459ae3c1f3fc24ca7",
+     "transfer_events": {
+      "counter": "0",
+      "guid": {
+       "id": {
+        "addr": "0x6491826cc73a15fab80439b308a628781285f609a61a10197a770119355b4e02",
+        "creation_num": "1125899906842624"
+       }
+      }
+     }
+    }
+   }
+  },
+  {
+   "type": "write_resource",
+   "address": "0xd0489737abdec2621409325511bc8a24376316a1bcf7a28e685ba65149a00f69",
+   "state_key_hash": "0xbd30606eb83835f78161779929fd30f7c93207142bb0f7b68d0fc84ba636ede4",
+   "data": {
+    "type": "0x1::fungible_asset::FungibleStore",
+    "data": {
+     "balance": "6399381617",
+     "frozen": false,
+     "metadata": {
+      "inner": "0xa"
+     }
+    }
+   }
+  },
+  {
+   "type": "write_resource",
+   "address": "0xd0489737abdec2621409325511bc8a24376316a1bcf7a28e685ba65149a00f69",
+   "state_key_hash": "0xbd30606eb83835f78161779929fd30f7c93207142bb0f7b68d0fc84ba636ede4",
+   "data": {
+    "type": "0x1::object::ObjectCore",
+    "data": {
+     "allow_ungated_transfer": false,
+     "guid_creation_num": "1125899906842625",
+     "owner": "0x7d1858e4915dcb7ec382edda0f40a47a2add06349a3feb3f68e50c4d53bea9c5",
+     "transfer_events": {
+      "counter": "0",
+      "guid": {
+       "id": {
+        "addr": "0xd0489737abdec2621409325511bc8a24376316a1bcf7a28e685ba65149a00f69",
+        "creation_num": "1125899906842624"
+       }
+      }
+     }
+    }
+   }
+  }
+ ],
+ "_trimmed": "changes: only write_resource ObjectCore / FungibleStore / CoinStore kept; signature, hashes and other changes dropped"
+}
