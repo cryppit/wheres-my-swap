@@ -38,13 +38,16 @@
           <a class="nav-link" href="/refund">Stuck BTC or ZEC</a>
           <a class="nav-link opt" href="/address">Check an address</a>
           <a class="nav-link opt" href="/zec">ZEC route</a>
-          <a class="nav-link opt" href="https://wheres-my-swap.station-wheres-my-swap.workers.dev/recorder">Flight Recorder</a>
+          <a class="nav-link opt" href="/recorder">Flight Recorder</a>
         </div>
       </nav>
     </header>
 
     <main>
       <section class="hero" id="check">
+        <div class="hero-art" aria-hidden="true">
+          <video id="hero-loop" muted loop playsinline preload="none" poster="/art/hero.jpg" width="1928" height="1076"><source src="/art/hero-loop.mp4" type="video/mp4" /></video>
+        </div>
         <div class="wrap hero-grid">
           <div>
             <p class="chip in"><span class="live-dot" aria-hidden="true"></span> Free · read-only · no wallet, no keys</p>
@@ -57,7 +60,23 @@
                 <button class="check" id="go" type="submit"><span>Check</span><span class="check-arrow" aria-hidden="true">→</span></button>
               </div>
             </form>
-            <p class="assets-label">Swaps between 100+ assets on 30+ chains, such as</p>
+            <p class="assets-label">Payouts checked on 33 chains, including</p>
+            <ul class="chains" aria-label="Some of the chains payouts are checked on">
+              <li><img src="/logos/eth.svg" alt="Ethereum" title="Ethereum" width="36" height="36" /></li>
+              <li><img src="/logos/btc.svg" alt="Bitcoin" title="Bitcoin" width="36" height="36" /></li>
+              <li><img src="/logos/sol.svg" alt="Solana" title="Solana" width="36" height="36" /></li>
+              <li><img src="/logos/arb.svg" alt="Arbitrum" title="Arbitrum" width="36" height="36" /></li>
+              <li><img src="/logos/base.svg" alt="Base" title="Base" width="36" height="36" /></li>
+              <li><img src="/logos/bsc.svg" alt="BNB Chain" title="BNB Chain" width="36" height="36" /></li>
+              <li><img src="/logos/pol.svg" alt="Polygon" title="Polygon" width="36" height="36" /></li>
+              <li><img src="/logos/avax.svg" alt="Avalanche" title="Avalanche" width="36" height="36" /></li>
+              <li><img src="/logos/op.svg" alt="Optimism" title="Optimism" width="36" height="36" /></li>
+              <li><img src="/logos/tron.svg" alt="TRON" title="TRON" width="36" height="36" /></li>
+              <li><img src="/logos/zec.svg" alt="Zcash" title="Zcash" width="36" height="36" /></li>
+              <li><img src="/logos/near.svg" alt="NEAR" title="NEAR" width="36" height="36" /></li>
+              <li class="chains-more">+21</li>
+            </ul>
+            <p class="assets-label">Swaps between 100+ assets, such as</p>
             <div class="assets" aria-label="Some of the assets NEAR Intents swaps">
               <ul class="assets-track" id="assets"></ul>
             </div>
@@ -69,20 +88,8 @@
               <span class="eyebrow">How a check reads</span>
               <span class="demo-tag">Illustration · not a real order</span>
             </div>
-            <div class="route" aria-hidden="true">
-              <span class="node"><span class="node-sym">BTC</span><span class="node-chain">Bitcoin</span></span>
-              <span class="wire"></span>
-              <span class="node mid"><span class="node-sym">NEAR</span><span class="node-chain">Intents</span></span>
-              <span class="wire"></span>
-              <span class="node"><span class="node-sym">USDC</span><span class="node-chain">Solana</span></span>
-            </div>
-            <ol class="demo-hops">
-              <li class="dhop"><span class="dhop-n">1</span><span><span class="dhop-title">Deposit seen on Bitcoin</span><span class="dhop-note">found by its transaction hash</span></span></li>
-              <li class="dhop"><span class="dhop-n">2</span><span><span class="dhop-title">Credited on NEAR</span><span class="dhop-note">to the order's deposit account</span></span></li>
-              <li class="dhop"><span class="dhop-n">3</span><span><span class="dhop-title">Swapped BTC → USDC</span><span class="dhop-note">a solver filled the intent</span></span></li>
-              <li class="dhop"><span class="dhop-n">4</span><span><span class="dhop-title">Paid out on Solana</span><span class="dhop-note">matched to the transfer on that chain</span></span></li>
-            </ol>
-            <figcaption class="demo-foot"><b>Delivered.</b> Every hop checked against public chain data.</figcaption>
+            <div id="demo-route"></div>
+            <figcaption class="demo-foot"><b>Delivered.</b> On a real check, every stop is read from public chain data.</figcaption>
           </figure>
         </div>
 
@@ -113,6 +120,38 @@
             <span class="cell-value">0</span>
             <span class="cell-sub">read-only, in your browser</span>
           </div>
+        </div>
+      </section>
+
+      <section class="section gives" aria-label="What a check gives you">
+        <div class="wrap gives-grid">
+          <article class="give">
+            <p class="give-k"><span class="gi gi-diag" aria-hidden="true"></span>Where it stopped</p>
+            <h3>Find what went wrong.</h3>
+            <p>The exact stop where an order broke, named from chain data, with how long it has waited.</p>
+            <ul class="give-stack" aria-label="Some of the reasons a check names">
+              <li class="r1">Locked by the operators</li><li class="r2">Stalled after the credit</li><li class="r3">Payout not found</li><li class="r4">Payout bounced</li>
+            </ul>
+            <a class="give-go" href="#cases">See a stuck order →</a>
+          </article>
+          <article class="give">
+            <p class="give-k"><span class="gi gi-shield" aria-hidden="true"></span>Who can move it</p>
+            <h3>Get your money back.</h3>
+            <p>Where the money is right now, who can move it, and what to do next, with a support message ready to send to the app you swapped in.</p>
+            <ul class="give-checks">
+              <li>Where it is</li><li>Who can move it</li><li>What to do</li><li>Support message</li>
+            </ul>
+            <a class="give-go" href="/refund">Stuck BTC or ZEC →</a>
+          </article>
+          <article class="give">
+            <p class="give-k"><span class="gi gi-doc" aria-hidden="true"></span>Every hop, linked</p>
+            <h3>See the full story.</h3>
+            <p>Every stop links to its transaction on its own chain's explorer, so anyone can check the answer for themselves.</p>
+            <ul class="give-layers" aria-label="The stops a check links">
+              <li>Origin transaction</li><li>Credit on NEAR</li><li>Swap and solvers</li><li>Withdrawal</li><li>Payout on its chain</li>
+            </ul>
+            <a class="give-go" href="#rail">The five places →</a>
+          </article>
         </div>
       </section>
 
@@ -159,7 +198,7 @@
         </div>
       </section>
 
-      <section class="section band" aria-label="Stuck Bitcoin or Zcash">
+      <section class="section band band-art" aria-label="Stuck Bitcoin or Zcash">
         <div class="wrap band-grid">
           <div>
             <p class="eyebrow">Stuck Bitcoin or Zcash</p>
@@ -212,7 +251,23 @@
             <div><dt>3 of 3</dt><dd>public incidents caught</dd></div>
           </dl>
           <p class="note">From our tracing run of 2026-10-04 on public data: a two-hour window of NEAR mainnet and 50 sampled orders across Bitcoin, Ethereum, Solana, TRON and NEAR.</p>
-          <a class="pilot" href="https://wheres-my-swap.station-wheres-my-swap.workers.dev/recorder"><i></i><i></i><i></i><i></i>Request a pilot</a>
+          <a class="pilot" href="/recorder"><i></i><i></i><i></i><i></i>Request a pilot</a>
+        </div>
+      </section>
+      <section class="section more" aria-label="More from Cryppit">
+        <div class="wrap">
+          <p class="eyebrow">More from Cryppit</p>
+          <h2 class="mt">Every hop, on every chain we can read</h2>
+          <div class="more-grid">
+            <a class="more-card" href="https://cryppit.github.io/zec-refund-helper/" target="_blank" rel="noopener noreferrer">
+              <img src="/art/refund.jpg" alt="" loading="lazy" width="1400" height="939" />
+              <span class="more-body"><span class="eyebrow">Live · open source</span><b>Zcash Refund Helper</b><span>A ZEC or BTC deposit stuck in the Omni bridge: where it stands, and the bridge's own way back to your address.</span><span class="more-go">Check a deposit →</span></span>
+            </a>
+            <a class="more-card" href="https://cryppit.github.io/wheres-my-withdrawal/" target="_blank" rel="noopener noreferrer">
+              <img src="/art/withdrawal.jpg" alt="" loading="lazy" width="1400" height="939" />
+              <span class="more-body"><span class="eyebrow">Live · free</span><b>Where's My Withdrawal</b><span>An OP Mainnet, Base, Arbitrum, Linea or ZKsync withdrawal: the missing step, when it opens, and who can take it.</span><span class="more-go">Check a withdrawal →</span></span>
+            </a>
+          </div>
         </div>
       </section>
     </main>
@@ -229,7 +284,7 @@
               <li><a class="ext" href="/#rail">Five places your money can be</a></li>
               <li><a class="ext" href="/refund">Stuck BTC or ZEC</a></li>
               <li><a class="ext" href="/address">Can your wallet send to this address?</a></li>
-              <li><a class="ext" href="https://wheres-my-swap.station-wheres-my-swap.workers.dev/recorder">Flight Recorder</a></li>
+              <li><a class="ext" href="/recorder">Flight Recorder</a></li>
               <li><a class="ext" href="https://t.me/WheresMySwap_Bot" target="_blank" rel="noopener noreferrer">Telegram bot</a></li>
               <li><a class="ext" href="/#proven">What proven means</a></li>
             </ul>

@@ -5,8 +5,10 @@ import { chainName } from "./core/chains.js";
 import { supportMessage, whoCanMove } from "./core/custody.js";
 import { NEARBLOCKS_LINK } from "./core/nearblocks.js";
 import { payoutEvidence } from "./core/payout.js";
+import { routeOf } from "./core/route.js";
 import { bounceCause, creditSource, describeDuration, payingWithdrawal, payoutTransfer } from "./core/trace.js";
 import { groupDigits } from "./core/views.js";
+import { renderRoute } from "./render-route.js";
 import { whenUtc } from "./render-text.js";
 
 export function esc(s: string): string {
@@ -183,6 +185,7 @@ export function renderHtml(r: CheckResult): string {
   parts.push(`<section class="report" data-verdict="${r.verdict}">`);
   parts.push(`<header class="verdict"><h2>${VERDICT_TEXT[r.verdict]}</h2><p>Order account ${link(explorerUrl("address", "near", r.account), r.account)} · ${r.txCount} NEAR transaction${r.txCount === 1 ? "" : "s"} read · 1Click would say <code>${r.oneClickStatus}</code>${r.verdict === "confidential" ? ", or <code>SUCCESS</code> once the private leg has delivered" : ""}</p>${r.foundBy ? `<p class="small">Found from your ${esc(chainName(r.foundBy.chain))} transaction ${link(explorerUrl("tx", r.foundBy.chain, r.foundBy.originTx), r.foundBy.originTx)}, through ${foundVia(r.foundBy)}.</p>` : ""}${r.historySource === "nearblocks" ? `<p class="small">History from NearBlocks, because FastNEAR was unavailable. <a href="${NEARBLOCKS_LINK}" target="_blank" rel="noopener">Powered by Nearblocks.io APIs</a>. NearBlocks lists only transactions that moved this order's tokens: a deposit not credited yet does not show here.</p>` : ""}</header>`);
 
+  parts.push(renderRoute(routeOf(r)));
   parts.push('<ol class="hops">');
   const o = r.origin;
   if (o.status === "proven") {

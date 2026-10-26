@@ -29,28 +29,91 @@
   </head>
   <body>
     <header class="nav">
-      <nav class="wrap narrow" aria-label="Site">
-        <a class="brand" href="/"><img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="28" height="28" /><span>Where’s My Swap</span></a>
-        <span class="nav-tag">ZEC route</span>
+      <nav class="wrap" aria-label="Site">
+        <a class="brand" href="/#check"><img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="28" height="28" /><span>Where’s My Swap</span></a>
+        <div class="nav-links">
+          <a class="nav-link opt" href="/#rail">Five places</a>
+          <a class="nav-link opt" href="/#cases">Real orders</a>
+          <a class="nav-link opt2" href="/#wallets">For wallets</a>
+          <a class="nav-link" href="/refund">Stuck BTC or ZEC</a>
+          <a class="nav-link opt" href="/address">Check an address</a>
+          <a class="nav-link opt" href="/zec">ZEC route</a>
+          <a class="nav-link opt" href="/recorder">Flight Recorder</a>
+        </div>
       </nav>
     </header>
 
-    <main class="page">
-      <div class="wrap narrow">
-        <section>
-          <p class="eyebrow">Live, from public data</p>
-          <h1>Are ZEC payouts from NEAR Intents arriving?</h1>
-          <p class="lede">A swap that pays out in ZEC leaves NEAR Intents as a withdrawal through the Omni Zcash bridge. This page reads the newest of those withdrawals from NEAR and checks each payout on the Zcash chain, the same way the checker checks one order.</p>
+    <main>
+      <section class="hero hero-page" id="check">
+        <div class="hero-art hero-still" aria-hidden="true"><img src="/art/hero.jpg" alt="" width="1928" height="1076" /></div>
+        <div class="wrap hero-grid">
+          <div>
+            <p class="chip in"><span class="live-dot" aria-hidden="true"></span> Live, from public data</p>
+            <h1 class="h1"><span class="in in-2">Swapping into ZEC?</span><br /><span class="hi in in-3">See if payouts arrive.</span></h1>
+            <p class="lede in in-3">A swap that pays out in ZEC leaves NEAR Intents as a withdrawal through the Omni Zcash bridge. This page reads the newest of those withdrawals from NEAR and checks each payout on the Zcash chain, the same way the checker checks one order.</p>
+
+            <p class="assets-label">Read from</p>
+            <ul class="chains" aria-label="Read from">
+              <li><img src="/logos/near.svg" alt="NEAR" title="NEAR" width="36" height="36" /></li>
+              <li><img src="/logos/zec.svg" alt="Zcash" title="Zcash" width="36" height="36" /></li>
+            </ul>
+          </div>
+
+          <figure class="demo in in-4" aria-label="How the ZEC route reads: an illustration">
+            <span class="demo-beam" aria-hidden="true"></span>
+            <div class="demo-head">
+              <span class="eyebrow">How the ZEC route reads</span>
+              <span class="demo-tag">Illustration</span>
+            </div>
+            <ol class="ill-steps">
+              <li class="done"><img class="ill-coin" src="/logos/near.svg" alt="" width="26" height="26" /><div><b>Swap on NEAR Intents</b><span>into ZEC</span></div><em>Done</em></li>
+              <li class="done"><img class="ill-coin" src="/logos/near.svg" alt="" width="26" height="26" /><div><b>Omni Zcash bridge</b><span>withdrawal signed</span></div><em>Done</em></li>
+              <li class="next"><img class="ill-coin" src="/logos/zec.svg" alt="" width="26" height="26" /><div><b>Payout on Zcash</b><span>checked on the Zcash chain</span></div><em>Live</em></li>
+            </ol>
+            <figcaption class="demo-foot"><b>Every payout checked.</b> Read from NEAR and the Zcash chain, live.</figcaption>
+          </figure>
+        </div>
+        <div class="wrap">
           <div class="results" id="route" aria-live="polite"><p class="status-line">Reading the newest ZEC withdrawals…</p></div>
           <p class="note">Waiting for a ZEC payout of your own? <a class="ext" href="/">Paste your transaction or order account</a> to trace it. Sent ZEC into the Omni bridge and it never arrived? <a class="ext" href="/refund">Check it here</a>.</p>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
 
-    <footer class="footer">
-      <div class="wrap narrow">
-        <p class="footer-lead">Read-only. We never hold keys or sign anything, and nothing on this page is stored.</p>
-        <p class="small"><a class="ext" href="/">Where’s My Swap</a> · <a class="ext" href="https://t.me/WheresMySwap_Bot" target="_blank" rel="noopener noreferrer">Telegram bot</a> · Not financial advice. Not affiliated with NEAR, Intents Technology or any wallet. · Cryppit, 2026</p>
+    <footer class="footer" id="contact">
+      <div class="wrap">
+        <p class="footer-lead">Independent of NEAR Intents and its integrators. Public data, read in your browser. The checker stores nothing.</p>
+        <div class="footer-grid">
+          <img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="40" height="40" loading="lazy" />
+          <div>
+            <h4>Tool</h4>
+            <ul>
+              <li><a class="ext" href="/#check">Check an order</a></li>
+              <li><a class="ext" href="/#rail">Five places your money can be</a></li>
+              <li><a class="ext" href="/refund">Stuck BTC or ZEC</a></li>
+              <li><a class="ext" href="/address">Can your wallet send to this address?</a></li>
+              <li><a class="ext" href="/recorder">Flight Recorder</a></li>
+              <li><a class="ext" href="https://t.me/WheresMySwap_Bot" target="_blank" rel="noopener noreferrer">Telegram bot</a></li>
+              <li><a class="ext" href="/#proven">What proven means</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Cryppit</h4>
+            <ul>
+              <li>A research desk that watches crypto markets and writes down what it can prove.</li>
+              <li>Pilot requests: contact details follow once our handles are live.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Data</h4>
+            <ul>
+              <li><a class="ext" href="https://tx.main.fastnear.com" target="_blank" rel="noopener noreferrer">FastNEAR Transactions API</a></li>
+              <li><a class="ext" href="https://github.com/near/intents" target="_blank" rel="noopener noreferrer">NEAR Intents on GitHub</a></li>
+              <li>Not financial advice. Not affiliated with NEAR.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="small">Cryppit, 2026 · Display type: Cabinet Grotesk by the Indian Type Foundry.</p>
       </div>
     </footer>
   </body>

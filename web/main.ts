@@ -8,8 +8,12 @@ import { UTXO_CHAINS, type BoardRow } from "../src/core/btc-refund.js";
 import { describeDuration } from "../src/core/trace.js";
 import { publicOriginClient, refundHintTxid } from "../src/origin.js";
 import { publicPayoutClient } from "../src/payouts.js";
+import type { Route } from "../src/core/route.js";
+import { boardSummary } from "../src/board-summary.js";
 import { esc, renderHtml } from "../src/render-html.js";
+import { renderRoute } from "../src/render-route.js";
 import { renderText } from "../src/render-text.js";
+import { playRoute } from "./route.js";
 import { errorHtml, fromHash, goTo, nowSec, wireCopyButtons } from "./shared.js";
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
@@ -39,6 +43,7 @@ async function run(query: string): Promise<void> {
     if (id !== running) return;
     last = result;
     out.innerHTML = `${renderHtml(result)}<div class="actions"><button type="button" class="ghost" data-action="report">Copy report</button><button type="button" class="ghost" data-action="link">Copy link</button></div>`;
+    playRoute(out);
   } catch (e) {
     if (id !== running) return;
     last = null;
@@ -82,10 +87,53 @@ function fromLink(): void {
 window.addEventListener("hashchange", fromLink);
 fromLink();
 
+// ---- The hero's illustration: the same route a real check draws, played when it comes into view -------------------
+
+const DEMO: Route = {
+  stops: [
+    { key: "origin", title: "Deposit", place: "Bitcoin", state: "done", atNs: null, chain: "btc" },
+    { key: "credit", title: "Credit", place: "NEAR Intents", state: "done", atNs: null, chain: "near" },
+    { key: "swap", title: "Swap", place: "BTC → USDC", state: "done", atNs: null, chain: "near" },
+    { key: "withdrawal", title: "Withdrawal", place: "to Solana", state: "done", atNs: null, chain: "near" },
+    { key: "payout", title: "Payout", place: "Solana", state: "done", atNs: null, chain: "sol" },
+  ],
+  from: "Bitcoin",
+  to: "Solana",
+  refunded: false,
+  stopIndex: null,
+  segmentsSec: [null, 4, 2, 38],
+  totalSec: 44,
+};
+const demo = $<HTMLDivElement>("demo-route");
+demo.innerHTML = renderRoute(DEMO);
+let demoPlayed = false;
+new IntersectionObserver((entries, observer) => {
+  if (!entries.some((e) => e.isIntersecting) || demoPlayed) return;
+  demoPlayed = true;
+  observer.disconnect();
+  setTimeout(() => playRoute(demo), 500);
+}, { threshold: 0.6 }).observe(demo);
+demo.closest("figure")?.addEventListener("mouseenter", () => playRoute(demo));
+
+// ---- The hero loop: plays only on wide screens where motion is welcome; phones and reduced motion keep the poster ---
+
+const loop = document.getElementById("hero-loop") as HTMLVideoElement | null;
+if (loop && window.matchMedia("(min-width: 961px) and (prefers-reduced-motion: no-preference)").matches) {
+  loop.preload = "auto";
+  loop.load();
+  void loop.play().catch(() => undefined);
+}
+
 // ---- The asset marquee (twice, so it loops; the second copy is hidden from screen readers) ------------------------
 
 const ASSETS = ["BTC", "ETH", "SOL", "DOGE", "ZEC", "NEAR", "USDC", "USDT", "XRP", "TRX", "LTC", "BCH", "ADA", "SUI", "TON", "AVAX", "BNB", "XLM", "APT", "DASH"];
-const chip = (a: string, hidden: boolean): string => `<li class="asset"${hidden ? ' aria-hidden="true"' : ""}><span class="disc c-${a.toLowerCase()}">${a[0]}</span>${a}</li>`;
+/** The coin's logo file under /logos, by ticker; the rest keep their lettered disc. */
+const COIN_LOGO: Record<string, string> = { BTC: "btc", ETH: "eth", SOL: "sol", DOGE: "doge", ZEC: "zec", NEAR: "near", USDC: "usdc", USDT: "usdt", XRP: "xrp", TRX: "tron", LTC: "ltc", BCH: "bch", ADA: "cardano", SUI: "sui", TON: "ton", AVAX: "avax", BNB: "bsc", XLM: "stellar", APT: "aptos", DASH: "dash" };
+const chip = (a: string, hidden: boolean): string => {
+  const logo = COIN_LOGO[a];
+  const mark = logo ? `<img class="coin" src="/logos/${logo}.svg" alt="" width="20" height="20" loading="lazy" decoding="async">` : `<span class="disc c-${a.toLowerCase()}">${a[0]}</span>`;
+  return `<li class="asset"${hidden ? ' aria-hidden="true"' : ""}>${mark}${a}</li>`;
+};
 $<HTMLUListElement>("assets").innerHTML = [...ASSETS.map((a) => chip(a, false)), ...ASSETS.map((a) => chip(a, true))].join("");
 
 // ---- Live from chain data -----------------------------------------------------------------------------------------
@@ -148,17 +196,26 @@ function paint(): void {
   }
 }
 
-/** The band's card: the refund that has waited longest for someone to execute it. */
+/** The band's card: the open refund requests on both bridges, live, and the one that has waited longest to be executed. */
+const COIN_FILE: Record<string, string> = { btc: "btc", zcash: "zec" };
 function paintWaiting(): void {
   const card = $("waiting");
+  const head = '<p class="eyebrow wait-head"><span class="live-dot" aria-hidden="true"></span> Right now, on chain</p>';
   if (!board) {
-    if (boardBusy) card.innerHTML = '<p class="eyebrow">Right now, on chain</p><p class="say">NEAR’s public servers are busy, so the bridge contracts could not be read just now. The refund page reads them again.</p>';
+    if (boardBusy) card.innerHTML = `${head}<p class="say">NEAR’s public servers are busy, so the bridge contracts could not be read just now. The refund page reads them again.</p>`;
     return;
   }
-  const first = board.rows.find((r) => r.state === "ready");
-  card.innerHTML = first
-    ? `<p class="eyebrow">Right now, on chain</p><p class="big">${(first.amountSat / 1e8).toFixed(4)} ${UTXO_CHAINS[first.chain].unit}</p><p class="say">ready to go home for <b>${describeDuration(first.readyForSec)}</b>. The refund was requested, the lock passed, and nobody has pressed the button.</p><p class="addr">refund address ${esc(first.refundTo)}</p>`
-    : '<p class="eyebrow">Right now, on chain</p><p class="say">No refund is waiting to be executed right now.</p>';
+  const s = boardSummary(board.rows, nowSec());
+  const coins = (["btc", "zcash"] as const)
+    .map((c) => `<span class="wait-coin"><img src="/logos/${COIN_FILE[c]}.svg" alt="" width="22" height="22" /><b>${s.byChain[c]}</b> ${UTXO_CHAINS[c].unit}</span>`)
+    .join("");
+  const chips = `<p class="wait-chips"><span class="wc ready"><b>${s.ready}</b> ready</span><span class="wc locked"><b>${s.locked}</b> locked</span><span class="wc done"><b>${s.executed}</b> executed</span></p>`;
+  const first = s.firstReady;
+  const lead = first
+    ? `<p class="big">${(first.amountSat / 1e8).toFixed(4)} ${UTXO_CHAINS[first.chain].unit}</p><p class="say">ready to go home for <b>${describeDuration(first.readyForSec)}</b>. The refund was requested, the lock passed, and nobody has pressed the button.</p><p class="addr">refund address ${esc(first.refundTo)}</p>`
+    : `<p class="big">${s.open}</p><p class="say">open refund request${s.open === 1 ? "" : "s"} on the Omni Bitcoin and Zcash bridges. None is ready to execute right now${s.nextUnlockInSec !== null ? `; the next lock opens in <b>${describeDuration(s.nextUnlockInSec)}</b>` : ""}.</p>`;
+  const long = s.longLocked ? `<p class="wait-note">${s.longLocked === 1 ? "One of them waits" : `${s.longLocked} of them wait`} out the bridge’s 100-year lock for deposits that named no refund address.</p>` : "";
+  card.innerHTML = `${head}${lead}<div class="wait-row">${coins}</div>${chips}${long}<a class="wait-go" href="/refund">See every open refund →</a>`;
 }
 
 void readBlock();

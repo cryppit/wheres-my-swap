@@ -1,7 +1,7 @@
 // The payout hop on the destination chain. Pure: `payoutTarget` says where and what to search for a withdrawal, and
 // `matchPayout` turns the transfers found there into a verdict. The fetching is in ../payouts.ts.
 //
-// Matching (tuned on 50 real orders, 48 of them matched): a candidate is a transfer into
+// Matching (from the G1 experiment, ~/NEAR research/experiment-g1, 48 of 50 orders): a candidate is a transfer into
 // the destination after the burn that pays at most what was burned and at least that minus the bridge's withdrawal
 // fee. Exactly one candidate is the payout; two or more are reported as ambiguous, never picked.
 

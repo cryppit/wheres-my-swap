@@ -29,48 +29,125 @@
   </head>
   <body>
     <header class="nav">
-      <nav class="wrap narrow" aria-label="Site">
-        <a class="brand" href="/"><img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="28" height="28" /><span>Where’s My Swap</span></a>
-        <span class="nav-tag">Address check</span>
+      <nav class="wrap" aria-label="Site">
+        <a class="brand" href="/#check"><img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="28" height="28" /><span>Where’s My Swap</span></a>
+        <div class="nav-links">
+          <a class="nav-link opt" href="/#rail">Five places</a>
+          <a class="nav-link opt" href="/#cases">Real orders</a>
+          <a class="nav-link opt2" href="/#wallets">For wallets</a>
+          <a class="nav-link" href="/refund">Stuck BTC or ZEC</a>
+          <a class="nav-link opt" href="/address">Check an address</a>
+          <a class="nav-link opt" href="/zec">ZEC route</a>
+          <a class="nav-link opt" href="/recorder">Flight Recorder</a>
+        </div>
       </nav>
     </header>
 
-    <main class="page">
-      <div class="wrap narrow">
-        <section>
-          <h1>Can your wallet send to this address?</h1>
-          <p class="lede">Paste an address before you send. You’ll see which chain it belongs to, whether it has a typo, and in plain words what to do. For Zcash it also tells you whether a transparent-only wallet or a shielded wallet can pay it.</p>
-          <form class="form" id="form" aria-label="Check addresses">
-            <label for="q">One address per line (up to 20)</label>
-            <textarea class="input addr-input" id="q" rows="3" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="t1…, tex1…, u1…, 0x…, bc1…"></textarea>
-            <div class="form-row addr-row">
-              <label class="addr-hint-label" for="hint">The chain you’re sending on</label>
-              <select class="input addr-hint" id="hint">
-                <option value="">Not sure / any</option>
-                <option value="zcash">Zcash</option>
-                <option value="bitcoin">Bitcoin</option>
-                <option value="evm">Ethereum, Base, Arbitrum, BNB Chain (EVM)</option>
-                <option value="solana">Solana</option>
-                <option value="tron">TRON</option>
-                <option value="xrp">XRP</option>
-                <option value="stellar">Stellar</option>
-                <option value="ton">TON</option>
-                <option value="dogecoin">Dogecoin</option>
-                <option value="near">NEAR</option>
-              </select>
-              <button class="check" id="go" type="submit"><span>Check</span><span class="check-arrow" aria-hidden="true">→</span></button>
+    <main>
+      <section class="hero hero-page" id="check">
+        <div class="hero-art hero-still" aria-hidden="true"><img src="/art/swap.jpg" alt="" width="1928" height="1076" /></div>
+        <div class="wrap hero-grid">
+          <div>
+            <p class="chip in"><span class="live-dot" aria-hidden="true"></span> Free · checked in your browser · nothing is sent</p>
+            <h1 class="h1"><span class="in in-2">Sending crypto?</span><br /><span class="hi in in-3">Check the address first.</span></h1>
+            <p class="lede in in-3">Paste an address before you send. See which chain it belongs to, whether it has a typo, and in plain words whether your wallet can send to it. For Zcash it also tells you if a transparent-only or a shielded wallet can pay it.</p>
+            <form class="form in in-4" id="form" aria-label="Check addresses">
+              <label for="q">One address per line (up to 20)</label>
+              <textarea class="input addr-input" id="q" rows="3" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="t1…, tex1…, u1…, 0x…, bc1…"></textarea>
+              <div class="form-row addr-row">
+                <select class="input addr-hint" id="hint" aria-label="The chain you're sending on">
+                  <option value="">Sending on: not sure / any chain</option>
+                  <option value="zcash">Sending on: Zcash</option>
+                  <option value="bitcoin">Sending on: Bitcoin</option>
+                  <option value="evm">Sending on: Ethereum, Base, Arbitrum, BNB Chain (EVM)</option>
+                  <option value="solana">Sending on: Solana</option>
+                  <option value="tron">Sending on: TRON</option>
+                  <option value="xrp">Sending on: XRP</option>
+                  <option value="stellar">Sending on: Stellar</option>
+                  <option value="ton">Sending on: TON</option>
+                  <option value="dogecoin">Sending on: Dogecoin</option>
+                  <option value="near">Sending on: NEAR</option>
+                </select>
+                <button class="check" id="go" type="submit"><span>Check</span><span class="check-arrow" aria-hidden="true">→</span></button>
+              </div>
+            </form>
+            <p class="assets-label">Addresses checked on 10 chains</p>
+            <ul class="chains" aria-label="Addresses checked on 10 chains">
+              <li><img src="/logos/eth.svg" alt="Ethereum" title="Ethereum" width="36" height="36" /></li>
+              <li><img src="/logos/btc.svg" alt="Bitcoin" title="Bitcoin" width="36" height="36" /></li>
+              <li><img src="/logos/zec.svg" alt="Zcash" title="Zcash" width="36" height="36" /></li>
+              <li><img src="/logos/sol.svg" alt="Solana" title="Solana" width="36" height="36" /></li>
+              <li><img src="/logos/tron.svg" alt="TRON" title="TRON" width="36" height="36" /></li>
+              <li><img src="/logos/doge.svg" alt="Dogecoin" title="Dogecoin" width="36" height="36" /></li>
+              <li><img src="/logos/xrp.svg" alt="XRP" title="XRP" width="36" height="36" /></li>
+              <li><img src="/logos/stellar.svg" alt="Stellar" title="Stellar" width="36" height="36" /></li>
+              <li><img src="/logos/ton.svg" alt="TON" title="TON" width="36" height="36" /></li>
+              <li><img src="/logos/near.svg" alt="NEAR" title="NEAR" width="36" height="36" /></li>
+            </ul>
+          </div>
+
+          <figure class="demo in in-4" aria-label="How an address check reads: an illustration">
+            <span class="demo-beam" aria-hidden="true"></span>
+            <div class="demo-head">
+              <span class="eyebrow">How an address check reads</span>
+              <span class="demo-tag">Illustration</span>
             </div>
-            <p class="note">Checked in your browser. The addresses are never sent anywhere.</p>
-          </form>
+            <div class="ill">
+              <div class="ill-card">
+                <p class="ill-top"><img class="ill-coin" src="/logos/zec.svg" alt="" width="26" height="26" /><code>tex1s2rt…khdgte</code><span class="ill-chip">Zcash · valid</span></p>
+                <p class="ill-head">This is a TEX address, so send from a transparent balance.</p>
+                <p class="ill-row yes"><span class="ill-mark" aria-hidden="true">✓</span>From a transparent-only wallet</p>
+                <p class="ill-row no"><span class="ill-mark" aria-hidden="true">✕</span>From a shielded wallet</p>
+              </div>
+              <div class="ill-card is-stop">
+                <p class="ill-top"><img class="ill-coin" src="/logos/btc.svg" alt="" width="26" height="26" /><code>bc1qw508…v8f3t4</code><span class="ill-chip">Bitcoin</span></p>
+                <p class="ill-head">Stop: this is not a Zcash address.</p>
+                <p class="ill-sub">Sending ZEC to it would likely lose it. Ask for a Zcash address.</p>
+              </div>
+            </div>
+            <figcaption class="demo-foot"><b>Plain words.</b> Every answer says what to do next, not just what the address is.</figcaption>
+          </figure>
+        </div>
+        <div class="wrap">
           <div class="results" id="out" aria-live="polite"></div>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
 
-    <footer class="footer">
-      <div class="wrap narrow">
-        <p class="footer-lead">This checks an address’s form, offline. It can’t tell who controls an address or whether it’s the one you meant: compare it with the source.</p>
-        <p class="small"><a class="ext" href="/">Where’s My Swap</a> · <a class="ext" href="https://github.com/cryppit/wheres-my-swap" target="_blank" rel="noopener noreferrer">Open source (MIT)</a> · Not financial advice. · Cryppit, 2026</p>
+    <footer class="footer" id="contact">
+      <div class="wrap">
+        <p class="footer-lead">Independent of NEAR Intents and its integrators. Public data, read in your browser. The checker stores nothing.</p>
+        <div class="footer-grid">
+          <img src="/img/mark-56.png" srcset="/img/mark-56.png 2x, /img/mark-256.png 4x" alt="" width="40" height="40" loading="lazy" />
+          <div>
+            <h4>Tool</h4>
+            <ul>
+              <li><a class="ext" href="/#check">Check an order</a></li>
+              <li><a class="ext" href="/#rail">Five places your money can be</a></li>
+              <li><a class="ext" href="/refund">Stuck BTC or ZEC</a></li>
+              <li><a class="ext" href="/address">Can your wallet send to this address?</a></li>
+              <li><a class="ext" href="/recorder">Flight Recorder</a></li>
+              <li><a class="ext" href="https://t.me/WheresMySwap_Bot" target="_blank" rel="noopener noreferrer">Telegram bot</a></li>
+              <li><a class="ext" href="/#proven">What proven means</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Cryppit</h4>
+            <ul>
+              <li>A research desk that watches crypto markets and writes down what it can prove.</li>
+              <li>Pilot requests: contact details follow once our handles are live.</li>
+            </ul>
+          </div>
+          <div>
+            <h4>Data</h4>
+            <ul>
+              <li><a class="ext" href="https://tx.main.fastnear.com" target="_blank" rel="noopener noreferrer">FastNEAR Transactions API</a></li>
+              <li><a class="ext" href="https://github.com/near/intents" target="_blank" rel="noopener noreferrer">NEAR Intents on GitHub</a></li>
+              <li>Not financial advice. Not affiliated with NEAR.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="small">Cryppit, 2026 · Display type: Cabinet Grotesk by the Indian Type Foundry.</p>
       </div>
     </footer>
   </body>

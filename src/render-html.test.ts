@@ -85,7 +85,8 @@ describe("renderHtml", () => {
     if (!w) throw new Error("fixture has no withdrawal");
     w.destination = '<img src=x onerror="alert(1)">';
     const out = renderHtml(hostile);
-    expect(out).not.toContain("<img");
+    // Our own logo images are fine; the hostile one must only appear escaped.
+    expect(out).not.toContain("<img src=x");
     expect(out).toContain("&lt;img src=x onerror=&quot;alert(1)&quot;&gt;");
   });
 
