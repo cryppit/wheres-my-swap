@@ -5,7 +5,7 @@ import { readFileSync } from "node:fs";
 
 import { describe, expect, it } from "vitest";
 
-import { blake2b, classifyZcashAddress, decodeUnifiedAddress, f4jumble, f4jumbleInv, sha256, texToTransparent } from "./zcash-address.js";
+import { blake2b, classifyZcashAddress, decodeUnifiedAddress, f4jumble, f4jumbleInv, sha256, texToTransparent, zcashSendAdvice } from "./zcash-address.js";
 
 interface Vectors {
   unified: { p2pkh: string | null; p2sh: string | null; sapling: string | null; orchard: string | null; unknown_typecode: number | null; unknown: string | null; address: string }[];
@@ -41,6 +41,21 @@ describe("F4Jumble (ZIP-316 test vectors)", () => {
     expect(hex(f4jumble(bytes(v.normal)))).toBe(v.jumbled);
     expect(hex(f4jumbleInv(bytes(v.jumbled)))).toBe(v.normal);
   });
+
+  // The official vectors start at 48 bytes, but ZIP-316 and librustzcash now accept 38 (`VALID_LENGTH = 38..=4194368`:
+  // a transparent-only Revision 2 `tu` address). This vector comes from an independent Python F4Jumble written from the
+  // ZIP-316 text, which reproduces every official vector above.
+  it("38 bytes, the current minimum: jumbles and unjumbles", () => {
+    const normal = "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f202122232425";
+    const jumbled = "a2337d4890be24f7a6b5d8687c56676503f4a0e8fb025907e2229b47e25ecc12e76995a4ca2c";
+    expect(hex(f4jumble(bytes(normal)))).toBe(jumbled);
+    expect(hex(f4jumbleInv(bytes(jumbled)))).toBe(normal);
+  });
+
+  it("rejects an input shorter than 38 bytes", () => {
+    expect(() => f4jumble(new Uint8Array(37))).toThrow("F4Jumble input must be 38 to 4194368 bytes");
+    expect(() => f4jumbleInv(new Uint8Array(37))).toThrow("F4Jumble input must be 38 to 4194368 bytes");
+  });
 });
 
 describe("decodeUnifiedAddress (ZIP-316 test vectors)", () => {
@@ -64,6 +79,15 @@ describe("decodeUnifiedAddress (ZIP-316 test vectors)", () => {
     const bad = good.slice(0, -1) + (good.endsWith("q") ? "p" : "q");
     expect(decodeUnifiedAddress(bad)).toEqual({ error: "bad Bech32m checksum" });
     expect("error" in decodeUnifiedAddress("t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU1")).toBe(true);
+  });
+
+  it("rejects a 69-character u1 address for holding only a transparent receiver, not for its length", () => {
+    // 38 bytes before Bech32m: one P2PKH item (typecode 0, 20 bytes) plus the HRP padding, jumbled and encoded by an
+    // independent Python implementation that re-encodes every official vector byte for byte. A Revision 0 (`u`) address
+    // MUST contain a shielded item (ZIP-316), so this is invalid whatever its length.
+    const transparentOnly = "u148mzm4a9fwtn9jf2u2sq8zpzhgkdkj7k05fk3jh2vtzdxjzsue9nq3pap6k5jka40wl";
+    expect(transparentOnly).toHaveLength(69);
+    expect(decodeUnifiedAddress(transparentOnly)).toEqual({ error: "a unified address needs a non-transparent item" });
   });
 });
 
@@ -151,5 +175,65 @@ describe("texToTransparent (ZIP-320)", () => {
     expect(texToTransparent("t1VmmGiyjVNeCjxDZzg7vZmd99WyzVby9yC")).toBeNull();
     expect(texToTransparent("tex1s2rt77ggv6q989lr49rkgzmh5slsksa9khdgtq")).toBeNull();
     expect(texToTransparent("")).toBeNull();
+  });
+});
+
+// What a sender can do with each kind of address, in plain words: asked for by a transparent-only wallet's support team
+// (Zcash forum, 26 Oct 2026), whose users need "can my wallet send to this?" more than the address's name.
+describe("zcashSendAdvice", () => {
+  const ORCHARD_SAPLING_UA =
+    "u1egfcnx27m4406w892hrp96n8akl66juj8pn0agqa2w2zrylpmq5yurssz0tlq3k4rmhag7y6kljezxp6me4j3h03ezs0tzrqynz2tdcnwenqqepl85f6qcxekcjv60wheqyyt5lk560t0m3tx7y2zqzwr56wr9fg76dumq08jspxmncv";
+
+  it("a transparent t-address: every wallet can pay it, and a shielded send makes the amount public", () => {
+    const a = zcashSendAdvice(classifyZcashAddress("t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU1"));
+    expect(a.transparent.can).toBe("yes");
+    expect(a.shielded.can).toBe("yes");
+    expect(a.shielded.why).toMatch(/public/);
+  });
+
+  it("a TEX address: send from a transparent balance; shielded funds must not pay it; a transparent wallet needs TEX support", () => {
+    const a = zcashSendAdvice(classifyZcashAddress("tex1s2rt77ggv6q989lr49rkgzmh5slsksa9khdgte"));
+    expect(a.next).toBe("This is a TEX address, so send from a transparent balance.");
+    expect(a.transparent.can).toBe("if-supported");
+    expect(a.transparent.why).toMatch(/TEX/);
+    expect(a.shielded.can).toBe("no");
+  });
+
+  it("a unified address with no transparent receiver: a transparent-only wallet cannot pay it", () => {
+    const a = zcashSendAdvice(classifyZcashAddress(ORCHARD_SAPLING_UA));
+    expect(a.next).toBe("This unified address has no transparent receiver.");
+    expect(a.transparent.can).toBe("no");
+    expect(a.transparent.why).toMatch(/t-address/);
+    expect(a.shielded.can).toBe("yes");
+  });
+
+  it("a unified address with a transparent receiver: a transparent wallet can pay it if it reads unified addresses", () => {
+    const tAndOrchard = vectors.unified.find((v) => v.p2pkh && v.orchard && !v.sapling && !v.unknown);
+    const a = zcashSendAdvice(classifyZcashAddress(tAndOrchard?.address ?? ""));
+    expect(a.next).toBe("This unified address has a transparent receiver, so a transparent wallet that reads unified addresses can pay it.");
+    expect(a.transparent.can).toBe("if-supported");
+    expect(a.shielded.can).toBe("yes");
+  });
+
+  it("a Sapling z-address: shielded wallets only", () => {
+    const sapling = vectors.unified.find((v) => v.sapling)?.sapling ?? "";
+    const a = zcashSendAdvice(classifyZcashAddress(encodeBech32ForTest("zs", bytes(sapling))));
+    expect(a.transparent.can).toBe("no");
+    expect(a.shielded.can).toBe("yes");
+  });
+
+  it("a mistyped address: nobody should send; copy it again", () => {
+    const a = zcashSendAdvice(classifyZcashAddress("t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU2"));
+    expect(a.transparent.can).toBe("no");
+    expect(a.shielded.can).toBe("no");
+    expect(a.next).toMatch(/copy it again/i);
+  });
+
+  it("a testnet address: no mainnet ZEC", () => {
+    const testnet = vectors.unified.find((v) => v.address.startsWith("utest1"));
+    if (testnet === undefined) return;
+    const a = zcashSendAdvice(classifyZcashAddress(testnet.address));
+    expect(a.transparent.can).toBe("no");
+    expect(a.next).toMatch(/testnet/);
   });
 });

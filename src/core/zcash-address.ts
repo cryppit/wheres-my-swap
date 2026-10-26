@@ -165,8 +165,9 @@ function f4G(i: number, u: Uint8Array, lenR: number): Uint8Array {
   }
   return out;
 }
+// ZIP-316 (and librustzcash's VALID_LENGTH) take 38..4194368 bytes; 38 fits a transparent-only Revision 2 `tu` address.
 const f4Split = (m: Uint8Array): number => {
-  if (m.length < 48 || m.length > 4_194_368) throw new Error("F4Jumble input must be 48 to 4194368 bytes");
+  if (m.length < 38 || m.length > 4_194_368) throw new Error("F4Jumble input must be 38 to 4194368 bytes");
   return Math.min(64, Math.floor(m.length / 2));
 };
 
@@ -324,7 +325,7 @@ export function decodeUnifiedAddress(s: string): { network: "main" | "test"; ite
   const network = UA_HRP[d.hrp];
   if (!network) return { error: `not a unified address (HRP ${d.hrp})` };
   if (d.variant !== "bech32m") return { error: "a unified address uses Bech32m" };
-  if (d.bytes.length < 48) return { error: "too short for a unified address" };
+  if (d.bytes.length < 38) return { error: "too short for a unified address" };
   const raw = f4jumbleInv(d.bytes);
   const pad = new Uint8Array(16);
   pad.set(new TextEncoder().encode(d.hrp));
@@ -434,5 +435,80 @@ export function describeZcashAddress(a: ZcashAddressInfo): string {
       const names = [r.orchard && "Orchard", r.sapling && "Sapling", r.p2pkh && "transparent", r.p2sh && "transparent P2SH"].filter((x): x is string => typeof x === "string");
       return `a unified address (${names.join(" + ") || "no known"} receiver${names.length === 1 ? "" : "s"})`;
     }
+  }
+}
+
+export interface SendAnswer {
+  /** "if-supported": the wallet must read this address format (TEX, ZIP-320; unified, ZIP-316). */
+  can: "yes" | "if-supported" | "no";
+  why: string;
+}
+
+export interface ZcashSendAdvice {
+  /** One plain sentence: what the address is, for the sender. */
+  next: string;
+  /** Sending from a transparent-only wallet (one that holds t-address funds only). */
+  transparent: SendAnswer;
+  /** Sending from a shielded balance (Orchard or Sapling). */
+  shielded: SendAnswer;
+}
+
+/** Can a sender pay this address, from a transparent-only wallet or from a shielded balance, and what to do next. */
+export function zcashSendAdvice(a: ZcashAddressInfo): ZcashSendAdvice {
+  const no = (why: string): SendAnswer => ({ can: "no", why });
+  if (!a.valid) {
+    const why = a.kind === "unknown" ? "No. This is not a Zcash address." : "No. A character in this address is wrong, so nothing should be sent to it.";
+    return { next: `Don't send: ${a.kind === "unknown" ? "this is not a Zcash address" : "a character in this address is wrong (it fails its built-in check)"}. Copy it again from the source.`, transparent: no(why), shielded: no(why) };
+  }
+  if (a.network === "test") {
+    const why = "It is a testnet address; mainnet ZEC sent to it is lost.";
+    return { next: "This is a testnet address. Don't send real ZEC to it.", transparent: no(why), shielded: no(why) };
+  }
+  const publicly = "Yes, but the amount and this address become public on the chain.";
+  switch (a.kind) {
+    case "p2pkh":
+    case "p2sh":
+      return {
+        next: "This is a regular transparent address. Any Zcash wallet can send to it.",
+        transparent: { can: "yes", why: "Yes." },
+        shielded: { can: "yes", why: publicly },
+      };
+    case "tex":
+      return {
+        next: "This is a TEX address, so send from a transparent balance.",
+        transparent: { can: "if-supported", why: "Yes, if your wallet accepts TEX addresses (ZIP 320); it sends from transparent funds. If it rejects the address, ask the recipient for a regular t-address." },
+        shielded: no("No. A TEX address must only be paid from transparent funds; move the ZEC to a transparent address first."),
+      };
+    case "sapling":
+      return {
+        next: "This is a shielded Sapling address: only a shielded wallet can send to it.",
+        transparent: no("No. A transparent-only wallet can't pay a shielded address; ask the recipient for a t-address."),
+        shielded: { can: "yes", why: "Yes, if your wallet supports Sapling (most shielded wallets do)." },
+      };
+    case "sprout":
+      return {
+        next: "Don't send: this is a Sprout address, and the Sprout pool has not accepted new funds since the Canopy upgrade (ZIP 211, 2020).",
+        transparent: no("No: Sprout no longer accepts new funds."),
+        shielded: no("No: Sprout no longer accepts new funds."),
+      };
+    case "unified": {
+      const r = a.receivers;
+      const shieldedReceiver = r.orchard ? "Orchard" : r.sapling ? "Sapling" : null;
+      const shielded: SendAnswer = shieldedReceiver ? { can: "yes", why: `Yes: it pays the ${shieldedReceiver} receiver.` } : { can: "yes", why: publicly };
+      if (r.p2pkh || r.p2sh) {
+        return {
+          next: "This unified address has a transparent receiver, so a transparent wallet that reads unified addresses can pay it.",
+          transparent: { can: "if-supported", why: "Yes, if your wallet reads unified addresses (ZIP 316): it pays the transparent receiver. If it doesn't, ask the recipient for their t-address." },
+          shielded,
+        };
+      }
+      return {
+        next: "This unified address has no transparent receiver.",
+        transparent: no("No. A transparent-only wallet can't pay it; ask the recipient for a t-address, or send from a shielded wallet."),
+        shielded,
+      };
+    }
+    case "unknown":
+      return { next: "Don't send: this is not a Zcash address.", transparent: no("This is not a Zcash address."), shielded: no("This is not a Zcash address.") };
   }
 }

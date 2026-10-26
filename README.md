@@ -168,6 +168,19 @@ change-only alerts for wallets and apps that route through 1Click, https://where
 **NEAR Agent Market** agents ([Where's My Swap](https://market.near.ai/a/wheres-my-swap) and
 [Address Checker](https://market.near.ai/a/address-checker)). They all build on the checker in this repository.
 
+## Address check (offline, `src/core/addresses.ts`)
+
+On the site at **/address** (`web/address.ts`, plain words from `src/address-advice.ts`), checked in the browser: paste up to 20 addresses (one per line, with the chain you mean to send on if you know it). Each is checked against its
+chain's own rules, offline: EVM (EIP-55), Bitcoin, TRON, Dogecoin, XRP, Stellar, TON, Solana, NEAR and Zcash. A named chain
+the address does not belong to comes first, as a warning.
+
+For Zcash it decodes the address (transparent t1/t3, TEX per ZIP 320, Sapling, Sprout, or unified per ZIP 316 with its
+receivers) and answers, in plain words, whether a **transparent-only wallet** and a **shielded wallet** can send to it,
+and what to do next (`zcashSendAdvice` in `src/core/zcash-address.ts`). For example, "This is a TEX address, so send from a
+transparent balance", or "This unified address has no transparent receiver". "Yes, if supported" means the wallet must
+read that format (TEX or unified); if it rejects the address, ask the recipient for a regular t-address. The check cannot
+tell who controls an address or whether it is the one you meant.
+
 ## ZEC route page (`/zec`)
 
 Are ZEC payouts from NEAR Intents reaching Zcash? The page reads the newest 120 transactions of the ZEC token

@@ -16,7 +16,7 @@ export default defineConfig({
   build: {
     outDir: "../dist",
     emptyOutDir: true,
-    rollupOptions: { input: { index: resolve(web, "index.html"), refund: resolve(web, "refund.html"), zec: resolve(web, "zec.html"), notFound: resolve(web, "404.html") } },
+    rollupOptions: { input: { index: resolve(web, "index.html"), refund: resolve(web, "refund.html"), address: resolve(web, "address.html"), zec: resolve(web, "zec.html"), notFound: resolve(web, "404.html") } },
   },
   server: { port: 5003 },
 });

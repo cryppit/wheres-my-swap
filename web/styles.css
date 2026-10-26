@@ -306,3 +306,26 @@ a.cell:hover { background: #ddf24a0f; }
 @media (max-width: 560px) { .board td.actions { white-space: normal; text-align: left; } .board td.actions .ghost { margin: 4px 6px 0 0; } }
 
 .verdict-box a.cta { color: var(--ink); }
+
+/* The address page (web/address.ts) */
+.addr-input { width: 100%; min-height: 84px; resize: vertical; font-family: var(--font-mono); }
+.addr-row { margin-top: 12px; align-items: center; flex-wrap: wrap; }
+.addr-hint-label { color: var(--mist); font-size: 0.9rem; }
+.addr-hint { flex: 1 1 240px; }
+.addr-card { margin-top: 22px; padding: 18px 18px 14px; border: 1px solid var(--line); background: linear-gradient(#121a4a8c, #070b22b3); }
+.addr-card[data-valid="false"] { border-color: color-mix(in srgb, #ff6b6b 60%, transparent); }
+.addr-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.addr-top code { font: 0.85rem/1.4 var(--font-mono); overflow-wrap: anywhere; }
+.addr-chip { padding: 2px 8px; border: 1px solid var(--line); font: 500 0.7rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--mist); }
+.addr-card[data-valid="true"] .addr-chip { border-color: var(--hi); color: var(--hi); }
+.addr-plain { margin-top: 14px; padding: 14px 16px; border: 1px solid color-mix(in srgb, var(--hi) 40%, transparent); background: color-mix(in srgb, var(--hi) 6%, transparent); }
+.addr-plain .eyebrow { color: var(--hi); }
+.addr-plain h3 { margin-top: 6px; font-size: 1.15rem; line-height: 1.35; }
+.addr-steps { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; color: var(--bone); }
+.addr-answers { margin-top: 12px; display: grid; gap: 10px; }
+.addr-answer { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.addr-answer p { margin-top: 2px; color: var(--mist); }
+.addr-mark { width: 26px; height: 26px; display: grid; place-items: center; font-weight: 800; border: 1px solid; }
+.addr-answer.yes .addr-mark { color: var(--hi); border-color: var(--hi); }
+.addr-answer.no .addr-mark { color: #ff6b6b; border-color: #ff6b6b; }
+.addr-what { margin-top: 12px; color: var(--mist); font: 0.8rem/1.5 var(--font-mono); overflow-wrap: anywhere; }
