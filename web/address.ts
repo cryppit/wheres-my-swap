@@ -10,7 +10,6 @@ import { fromHash, goTo } from "./shared.js";
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 const form = $<HTMLFormElement>("form");
 const input = $<HTMLTextAreaElement>("q");
-const hint = $<HTMLSelectElement>("hint");
 const out = $<HTMLDivElement>("out");
 
 const MAX = 20;
@@ -41,7 +40,8 @@ function run(text: string): void {
     out.innerHTML = "";
     return;
   }
-  const h = (hint.value || null) as AddressChain | null;
+  const picked = document.querySelector<HTMLInputElement>('input[name="hint"]:checked');
+  const h = (picked?.value || null) as AddressChain | null;
   out.innerHTML = unique.map((a) => card(plainAddress(a, h))).join("") + (lines.length > MAX ? `<p class="note">Only the first ${MAX} addresses were checked.</p>` : "");
 }
 
@@ -50,4 +50,8 @@ form.addEventListener("submit", (ev) => {
   goTo(input.value.trim(), run);
 });
 window.addEventListener("hashchange", () => run(fromHash()));
+// Picking another chain re-checks what is already there.
+form.addEventListener("change", (ev) => {
+  if (ev.target instanceof HTMLInputElement && ev.target.name === "hint" && input.value.trim()) run(input.value);
+});
 if (fromHash()) run(fromHash());

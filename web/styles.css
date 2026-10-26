@@ -531,3 +531,24 @@ img[src$="linea.svg"], img[src$="zksync.svg"] { background: #f3efe4; border-radi
 @keyframes ill-pulse { 0%, 100% { background: transparent; } 50% { background: color-mix(in srgb, var(--hi) 7%, transparent); } }
 @media (prefers-reduced-motion: reduce) { .hero-still img, .ill-steps li.next { animation: none; } }
 @media (max-width: 560px) { .addr-row .addr-hint { flex: none; height: 56px; width: 100%; } .addr-row .check { width: 100%; justify-content: center; } }
+.hero-short { padding-bottom: 40px; }
+.hero-short .lede { max-width: 60ch; }
+.section-tight { padding-top: 40px; }
+/* The chain picker on /address: glowing logo pills instead of a dropdown */
+.chain-pick { border: 0; padding: 0; margin: 16px 0 0; min-width: 0; }
+.chain-pick legend { padding: 0; margin-bottom: 10px; font: 500 0.75rem/1.4 var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--mist); }
+.cp-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.cp { position: relative; display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 6px 6px; border: 1px solid #b7bde333; border-radius: 999px; background: #03040cb3; color: var(--bone); font-size: 0.88rem; cursor: pointer; transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s; }
+.cp:hover { border-color: color-mix(in srgb, var(--hi) 55%, transparent); transform: translateY(-1px); }
+.cp input { position: absolute; opacity: 0; pointer-events: none; }
+.cp img, .cp-any { width: 26px; height: 26px; padding: 4px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #18204f, #070b22 70%); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--hi) 45%, transparent), 0 0 10px color-mix(in srgb, var(--hi) 20%, transparent); }
+.cp-any { display: grid; place-items: center; color: var(--hi); font-size: 0.8rem; }
+.cp:has(input:checked) { border-color: var(--hi); color: var(--hi); box-shadow: 0 0 0 1px var(--hi), 0 0 22px -4px color-mix(in srgb, var(--hi) 70%, transparent); }
+.cp:has(input:checked) img, .cp:has(input:checked) .cp-any { box-shadow: inset 0 0 0 1.5px var(--hi), 0 0 16px color-mix(in srgb, var(--hi) 60%, transparent); }
+.cp:has(input:focus-visible) { outline: 2px solid var(--hi); outline-offset: 2px; }
+.addr-go { margin-top: 16px; }
+@media (max-width: 560px) { .addr-go { width: 100%; justify-content: center; } }
+.form .cp { display: inline-flex; flex-direction: row; margin-bottom: 0; font: 500 0.9rem/1 var(--font-text); text-transform: none; letter-spacing: 0; color: var(--bone); }
+.form .cp:has(input:checked) { color: var(--hi); }
+/* The all-black logos (Stellar, Linea, ZKsync, Aptos, Plasma) sit on a light disc so they show on the dark coins */
+:is(.cp, .chains, .ill-top, .ill-steps) :is(img[src$="/stellar.svg"], img[src$="/linea.svg"], img[src$="/zksync.svg"], img[src$="/aptos.svg"], img[src$="/plasma.svg"]) { background: radial-gradient(circle, #f3efe4 55%, #cfd3e8); }

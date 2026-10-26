@@ -54,22 +54,23 @@
             <form class="form in in-4" id="form" aria-label="Check addresses">
               <label for="q">One address per line (up to 20)</label>
               <textarea class="input addr-input" id="q" rows="3" autocomplete="off" spellcheck="false" autocapitalize="off" placeholder="t1…, tex1…, u1…, 0x…, bc1…"></textarea>
-              <div class="form-row addr-row">
-                <select class="input addr-hint" id="hint" aria-label="The chain you're sending on">
-                  <option value="">Sending on: not sure / any chain</option>
-                  <option value="zcash">Sending on: Zcash</option>
-                  <option value="bitcoin">Sending on: Bitcoin</option>
-                  <option value="evm">Sending on: Ethereum, Base, Arbitrum, BNB Chain (EVM)</option>
-                  <option value="solana">Sending on: Solana</option>
-                  <option value="tron">Sending on: TRON</option>
-                  <option value="xrp">Sending on: XRP</option>
-                  <option value="stellar">Sending on: Stellar</option>
-                  <option value="ton">Sending on: TON</option>
-                  <option value="dogecoin">Sending on: Dogecoin</option>
-                  <option value="near">Sending on: NEAR</option>
-                </select>
-                <button class="check" id="go" type="submit"><span>Check</span><span class="check-arrow" aria-hidden="true">→</span></button>
-              </div>
+              <fieldset class="chain-pick">
+                <legend>The chain you’re sending on</legend>
+                <div class="cp-row">
+                  <label class="cp"><input type="radio" name="hint" value="" checked /><span class="cp-any" aria-hidden="true">✦</span><span>Any chain</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="zcash" /><img src="/logos/zec.svg" alt="" width="22" height="22" /><span>Zcash</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="bitcoin" /><img src="/logos/btc.svg" alt="" width="22" height="22" /><span>Bitcoin</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="evm" /><img src="/logos/eth.svg" alt="" width="22" height="22" /><span>Ethereum & EVM</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="solana" /><img src="/logos/sol.svg" alt="" width="22" height="22" /><span>Solana</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="tron" /><img src="/logos/tron.svg" alt="" width="22" height="22" /><span>TRON</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="xrp" /><img src="/logos/xrp.svg" alt="" width="22" height="22" /><span>XRP</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="stellar" /><img src="/logos/stellar.svg" alt="" width="22" height="22" /><span>Stellar</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="ton" /><img src="/logos/ton.svg" alt="" width="22" height="22" /><span>TON</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="dogecoin" /><img src="/logos/doge.svg" alt="" width="22" height="22" /><span>Dogecoin</span></label>
+                  <label class="cp"><input type="radio" name="hint" value="near" /><img src="/logos/near.svg" alt="" width="22" height="22" /><span>NEAR</span></label>
+                </div>
+              </fieldset>
+              <button class="check addr-go" id="go" type="submit"><span>Check</span><span class="check-arrow" aria-hidden="true">→</span></button>
             </form>
             <p class="assets-label">Addresses checked on 10 chains</p>
             <ul class="chains" aria-label="Addresses checked on 10 chains">
