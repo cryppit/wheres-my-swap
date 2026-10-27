@@ -1,0 +1,9 @@
+# The bundler and CSS tools at the exact versions the hosted site is built with, so `pnpm build` gives the same bytes
+# (README: Verify the copy you run).
+overrides:
+  rolldown: 1.2.11
+  lightningcss: 1.33.0
+  postcss: 8.5.28
+# esbuild (used by tsx for the CLIs, not by the site build) needs its install script.
+allowBuilds:
+  esbuild: true

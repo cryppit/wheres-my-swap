@@ -192,6 +192,30 @@ data: FastNEAR, the Omni bridge's indexer and contracts, and Blockchair for Zcas
 is not called. Each payout costs about two calls to Blockchair's keyless tier, which limits calls per minute, so a row
 can read "Could not check" when that tier is busy.
 
+## Verify the copy you run
+
+The checks run in your browser and send nothing anywhere, so you should be able to confirm that the code your browser
+runs is the code in this repository. Every build writes `dist/build-hashes.txt`: the SHA-256 of each page, script and
+style of the public pages (the checker, `/refund`, `/address`, `/zec` and the 404 page), in the form `shasum -a 256 -c`
+reads. The site serves the same list at `/build-hashes.txt`, and each GitHub release carries it in its notes.
+
+To check the live site against this repository:
+
+```bash
+git clone https://github.com/cryppit/wheres-my-swap && cd wheres-my-swap
+git checkout <release tag>            # the release whose list matches the site's /build-hashes.txt
+pnpm install --frozen-lockfile        # the exact tool versions in pnpm-lock.yaml
+pnpm build                            # writes dist/ and dist/build-hashes.txt
+scripts/verify-live.sh                # fetches every listed file from the site and compares it, file by file
+```
+
+The same source gives the same bytes: Vite and its bundler are pinned exactly, and nothing in the pages depends on the
+machine or the day. To check what your own browser loaded, save a file from the developer tools (Network tab) and
+compare its SHA-256 with its line in the list. To skip the hosted copy entirely, run it yourself: `pnpm dev` serves the
+same pages locally, and the address check needs no network at all.
+
+Flight Recorder's pages are built separately on the hosted site and are not in this repository or the list.
+
 ## The site (Cloudflare Workers)
 
 `wrangler.jsonc` deploys one Worker, `wheres-my-swap`, at `src/site.ts`'s `SITE`:

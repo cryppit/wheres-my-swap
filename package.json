@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node scripts/build-hashes.mjs",
     "check": "tsx src/cli.ts",
     "test": "vitest run",
     "test:live": "vitest run --config vitest.live.config.ts",
@@ -26,5 +26,6 @@
   },
   "engines": {
     "node": ">=22.15"
-  }
+  },
+  "packageManager": "pnpm@11.21.0"
 }

@@ -16,6 +16,7 @@ export default defineConfig({
   build: {
     outDir: "../dist",
     emptyOutDir: true,
+    // The public pages; scripts/build-hashes.mjs lists the SHA-256 of what they build into (README: Verify the copy you run).
     rollupOptions: { input: { index: resolve(web, "index.html"), refund: resolve(web, "refund.html"), address: resolve(web, "address.html"), zec: resolve(web, "zec.html"), notFound: resolve(web, "404.html") } },
   },
   server: { port: 5003 },
