@@ -1,11 +1,16 @@
 // Which chain an address belongs to and whether it is well-formed there: the checksum or structure each chain defines,
 // checked offline. EVM (EIP-55), Bitcoin (Base58Check, BIP-173 bech32, BIP-350 bech32m), TRON, Dogecoin, XRP (Ripple's
 // alphabet), Stellar (SEP-23 StrKey), TON (user-friendly form with CRC16, or raw), Solana (32-byte key, no checksum),
-// NEAR (account rules) and Zcash (classifyZcashAddress). A valid form says nothing about who controls the address.
+// NEAR (account rules), Zcash (classifyZcashAddress), Litecoin and Dash (Base58Check, Litecoin bech32), Bitcoin Cash
+// (CashAddr), Cardano (CIP-19 bech32), Sui, Aptos, Movement and Starknet (0x hex, no checksum), Fogo (Solana's form),
+// Aleo (bech32m) and Quantus (SS58, prefix 189). HyperCore pays out to EVM addresses. A valid form says nothing about who
+// controls the address.
 
-import { classifyZcashAddress, describeZcashAddress, sha256 } from "./zcash-address.js";
+import { blake2b, classifyZcashAddress, describeZcashAddress, sha256 } from "./zcash-address.js";
 
-export type AddressChain = "evm" | "bitcoin" | "tron" | "dogecoin" | "xrp" | "stellar" | "ton" | "solana" | "near" | "zcash";
+export type AddressChain =
+  | "evm" | "bitcoin" | "tron" | "dogecoin" | "xrp" | "stellar" | "ton" | "solana" | "near" | "zcash"
+  | "litecoin" | "bitcoincash" | "dash" | "cardano" | "sui" | "aptos" | "starknet" | "fogo" | "aleo" | "movement" | "quantus";
 
 export interface AddressVerdict {
   chain: AddressChain;
@@ -120,6 +125,54 @@ function segwitDecode(addr: string, hrp: string): { version: number; program: nu
   return { version, program };
 }
 
+/** A plain bech32 checksum (BIP-173 constant 1) with no length cap, as Cardano's long addresses need (CIP-19). */
+function bech32Valid(addr: string): { hrp: string } | null {
+  if (addr !== addr.toLowerCase() && addr !== addr.toUpperCase()) return null;
+  const s = addr.toLowerCase();
+  const sep = s.lastIndexOf("1");
+  const hrp = s.slice(0, sep);
+  const data = [...s.slice(sep + 1)].map((c) => BECH32.indexOf(c));
+  if (sep < 1 || data.length < 7 || data.some((v) => v < 0)) return null;
+  const chk = bech32Polymod([...[...hrp].map((c) => c.charCodeAt(0) >> 5), 0, ...[...hrp].map((c) => c.charCodeAt(0) & 31), ...data]);
+  return chk === 1 ? { hrp } : null;
+}
+
+/** Aleo addresses: bech32m (BIP-350 constant) with the prefix aleo and a 32-byte key, 63 characters in all. */
+function aleoValid(addr: string): boolean {
+  if (addr !== addr.toLowerCase() || addr.length !== 63) return false;
+  const data = [...addr.slice(5)].map((c) => BECH32.indexOf(c));
+  if (data.some((v) => v < 0)) return false;
+  return bech32Polymod([3, 3, 3, 3, 0, 1, 12, 5, 15, ...data]) === 0x2bc830a3;
+}
+
+/** SS58 (Substrate) with a two-byte prefix: the network id it carries and whether its BLAKE2b-512 checksum matches. */
+function ss58(addr: string): { network: number; ok: boolean } | null {
+  const d = base58Decode(addr, B58_BTC);
+  if (d === null || d.length !== 36 || (d[0]! & 0xc0) !== 0x40) return null;
+  const network = ((d[0]! & 0x3f) << 2) | (d[1]! >> 6) | ((d[1]! & 0x3f) << 8);
+  const sum = blake2b(Uint8Array.from([...new TextEncoder().encode("SS58PRE"), ...d.subarray(0, 34)]), 64);
+  return { network, ok: sum[0] === d[34] && sum[1] === d[35] };
+}
+/** Quantus's SS58 network id (runtime/src/configs/mod.rs): its addresses start qz. */
+const QUANTUS_SS58 = 189;
+
+/** CashAddr's 40-bit BCH checksum over the prefix and payload (Bitcoin Cash, the CashAddr specification). */
+function cashAddrValid(prefix: string, payload: string): boolean {
+  const G = [0x98f2bc8e61n, 0x79b76d99e2n, 0xf33e5fb3c4n, 0xae2eabe2a8n, 0x1e4f43e470n];
+  let c = 1n;
+  const values = [...[...prefix].map((ch) => ch.charCodeAt(0) & 31), 0, ...[...payload].map((ch) => BECH32.indexOf(ch))];
+  if (values.some((v) => v < 0)) return false;
+  for (const d of values) {
+    const c0 = c >> 35n;
+    c = ((c & 0x07ffffffffn) << 5n) ^ BigInt(d);
+    for (let i = 0; i < 5; i++) if ((c0 >> BigInt(i)) & 1n) c ^= G[i]!;
+  }
+  return (c ^ 1n) === 0n;
+}
+
+/** Starknet addresses are field elements: below 2^251 + 17 * 2^192 + 1. */
+const STARKNET_P = (1n << 251n) + 17n * (1n << 192n) + 1n;
+
 function base32Decode(s: string): Uint8Array | null {
   const A = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
   let bits = 0;
@@ -177,7 +230,11 @@ const BASE58_CHAINS: { chain: AddressChain; test: RegExp; alphabet: string; vers
   { chain: "tron", test: /^T/, alphabet: B58_BTC, versions: { 0x41: "account" } },
   { chain: "dogecoin", test: /^[DA9]/, alphabet: B58_BTC, versions: { 0x1e: "P2PKH", 0x16: "P2SH" } },
   { chain: "xrp", test: /^r/, alphabet: B58_XRP, versions: { 0x00: "classic address" } },
+  { chain: "litecoin", test: /^[LM]/, alphabet: B58_BTC, versions: { 0x30: "P2PKH", 0x32: "P2SH" } },
+  { chain: "dash", test: /^[X7]/, alphabet: B58_BTC, versions: { 0x4c: "P2PKH", 0x10: "P2SH" } },
 ];
+
+const NO_CHECKSUM = "has no checksum, so a mistyped one can still look valid: compare it character by character";
 
 export function checkAddress(raw: string): AddressVerdict[] {
   const a = raw.trim();
@@ -197,6 +254,45 @@ export function checkAddress(raw: string): AddressVerdict[] {
     if ("error" in d) return [{ chain: "bitcoin", valid: false, kind: "SegWit", note: d.error }];
     const kind = d.version === 0 ? "SegWit v0" : d.version === 1 && d.program === 32 ? "Taproot" : `SegWit v${d.version}`;
     return [{ chain: "bitcoin", valid: true, kind, note: `Checksum and witness program verify (${d.version === 0 ? "bech32, BIP-173" : "bech32m, BIP-350"}).` }];
+  }
+  if (/^(ltc1|LTC1)/.test(a)) {
+    const d = segwitDecode(a, "ltc");
+    if ("error" in d) return [{ chain: "litecoin", valid: false, kind: "SegWit", note: d.error }];
+    return [{ chain: "litecoin", valid: true, kind: d.version === 0 ? "SegWit v0" : `SegWit v${d.version}`, note: "Litecoin SegWit address; checksum and witness program verify." }];
+  }
+  const cash = /^(?:(bitcoincash):)?([qp][02-9ac-hj-np-z]{41})$/i.exec(a);
+  if (cash && (a === a.toLowerCase() || a === a.toUpperCase())) {
+    const payload = cash[2]!.toLowerCase();
+    const ok = cashAddrValid("bitcoincash", payload);
+    return [{ chain: "bitcoincash", valid: ok, kind: payload.startsWith("q") ? "P2PKH" : "P2SH", note: ok ? "Bitcoin Cash CashAddr; the checksum verifies." : "The CashAddr checksum does not match (a mistyped character)." }];
+  }
+  if (/^(addr|addr_test|stake|stake_test)1/i.test(a)) {
+    const d = bech32Valid(a);
+    if (!d) return [{ chain: "cardano", valid: false, kind: "Shelley", note: "The checksum does not match (a mistyped character)." }];
+    if (d.hrp === "addr") return [{ chain: "cardano", valid: true, kind: "Shelley", note: "A Cardano mainnet payment address; the checksum verifies (CIP-19)." }];
+    if (d.hrp === "stake") return [{ chain: "cardano", valid: false, kind: "stake address", note: "A Cardano stake (reward) address, not a payment address: funds can't be sent to it. Ask for the address that starts addr1." }];
+    return [{ chain: "cardano", valid: false, kind: "testnet", note: "A Cardano testnet address: mainnet ADA sent to it is lost." }];
+  }
+  if (/^0x[0-9a-fA-F]{1,64}$/.test(a)) {
+    // Not the 40-hex EVM form (handled above): Sui, Aptos, Movement and Starknet share 0x hex and none has a checksum.
+    const hex = a.slice(2);
+    const v = BigInt(a);
+    const alike = "Sui, Aptos, Movement and Starknet addresses can look the same: check which network the recipient uses.";
+    if (hex.length === 64) out.push({ chain: "sui", valid: true, kind: "account", note: `A Sui address (0x and 64 hex). It ${NO_CHECKSUM}. ${alike}` });
+    out.push({ chain: "aptos", valid: true, kind: "account", note: `An Aptos address. It ${NO_CHECKSUM}. ${alike}` });
+    out.push({ chain: "movement", valid: true, kind: "account", note: `A Movement address (Movement uses Aptos's form). It ${NO_CHECKSUM}. ${alike}` });
+    if (v < STARKNET_P) out.push({ chain: "starknet", valid: true, kind: "account", note: `A Starknet address. It ${NO_CHECKSUM}. ${alike}` });
+    return out;
+  }
+  if (/^aleo1/i.test(a)) {
+    const ok = aleoValid(a);
+    return [{ chain: "aleo", valid: ok, kind: "account", note: ok ? "An Aleo address; the bech32m checksum verifies." : "The Aleo address checksum or length does not verify (a mistyped or missing character)." }];
+  }
+  if (/^qz[1-9A-HJ-NP-Za-km-z]{47}$/.test(a)) {
+    const q = ss58(a);
+    if (q !== null && q.network === QUANTUS_SS58) {
+      return [{ chain: "quantus", valid: q.ok, kind: "account", note: q.ok ? "A Quantus address (SS58, network 189); the checksum verifies." : "The Quantus address checksum does not match (a mistyped character)." }];
+    }
   }
   if (/^(t1|t3|tex1|u1|zs1)/i.test(a)) {
     const z = classifyZcashAddress(a);
@@ -232,7 +328,10 @@ export function checkAddress(raw: string): AddressVerdict[] {
   if (out.length > 0) return out;
   const sol = base58Decode(a, B58_BTC);
   if (sol !== null && sol.length === 32 && a.length >= 32 && a.length <= 44) {
-    return [{ chain: "solana", valid: true, kind: "account", note: "A well-formed 32-byte Solana key. Solana addresses have no checksum, so a mistyped one can still look valid: compare it character by character." }];
+    return [
+      { chain: "solana", valid: true, kind: "account", note: "A well-formed 32-byte Solana key. Solana addresses have no checksum, so a mistyped one can still look valid: compare it character by character." },
+      { chain: "fogo", valid: true, kind: "account", note: "Fogo uses Solana's address form: a well-formed 32-byte key with no checksum. Check which network the recipient uses." },
+    ];
   }
   if (/[.]/.test(a) && /^[A-Za-z0-9._-]{2,64}$/.test(a) && !/^\d+(\.\d+)*$/.test(a)) {
     const ok = NEAR_NAMED.test(a);

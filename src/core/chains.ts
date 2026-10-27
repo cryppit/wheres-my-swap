@@ -36,6 +36,10 @@ const NAMES: Record<string, string> = {
   cardano: "Cardano",
   starknet: "Starknet",
   hlevm: "HyperEVM",
+  hypercore: "Hyperliquid (HyperCore)",
+  aleo: "Aleo",
+  movement: "Movement",
+  qtc: "Quantus",
   fogo: "Fogo",
   near: "NEAR",
 };

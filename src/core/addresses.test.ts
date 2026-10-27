@@ -69,11 +69,13 @@ describe("checkAddress", () => {
     expect(only(`0:${"ab".repeat(32)}`)).toMatchObject({ chain: "ton", valid: true, kind: "raw" });
   });
 
-  it("accepts Solana addresses as 32-byte Base58 keys and says they carry no checksum", () => {
-    const v = only("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+  it("accepts Solana addresses as 32-byte Base58 keys, says they carry no checksum, and names Fogo (same form)", () => {
+    const all = checkAddress("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+    const v = all.find((x) => x.chain === "solana")!;
     expect(v).toMatchObject({ chain: "solana", valid: true });
     expect(v.note).toMatch(/no checksum/);
-    expect(only("11111111111111111111111111111111")).toMatchObject({ chain: "solana", valid: true });
+    expect(all.find((x) => x.chain === "fogo")).toMatchObject({ valid: true });
+    expect(checkAddress("11111111111111111111111111111111").find((x) => x.chain === "solana")).toMatchObject({ valid: true });
   });
 
   it("checks NEAR implicit and named accounts, and rejects upper case in a name", () => {
@@ -85,6 +87,63 @@ describe("checkAddress", () => {
   it("checks Zcash addresses with the full Zcash classifier", () => {
     expect(only("t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU1")).toMatchObject({ chain: "zcash", valid: true });
     expect(only("t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU2")).toMatchObject({ chain: "zcash", valid: false });
+  });
+
+  // Vectors made from one hash160 with an independent Python Base58Check/bech32 implementation (27 Oct 2026).
+  it("checks Litecoin legacy (L…), P2SH (M…) and SegWit (ltc1…) addresses", () => {
+    expect(only("LVuDpNCSSj6pQ7t9Pv6d6sUkLKoqDEVUnJ")).toMatchObject({ chain: "litecoin", valid: true, kind: "P2PKH" });
+    expect(only("MJaRnao1s62a2zAKSkmG582KbLKianqb7v")).toMatchObject({ chain: "litecoin", valid: true, kind: "P2SH" });
+    expect(only("ltc1qw508d6qejxtdg4y5r3zarvary0c5xw7kgmn4n9")).toMatchObject({ chain: "litecoin", valid: true, kind: "SegWit v0" });
+    expect(only("LVuDpNCSSj6pQ7t9Pv6d6sUkLKoqDEVUnK")).toMatchObject({ chain: "litecoin", valid: false });
+    expect(only("ltc1qw508d6qejxtdg4y5r3zarvary0c5xw7kgmn4n8")).toMatchObject({ chain: "litecoin", valid: false });
+  });
+
+  it("checks Dash P2PKH (X…) and P2SH (7…) addresses", () => {
+    expect(only("XmN7PQYWKn5MJFna5fRYgP6mxT2F7xpekE")).toMatchObject({ chain: "dash", valid: true, kind: "P2PKH" });
+    expect(only("7d5vJtfDixGnEFRNcVSRarmaCBZeScHACn")).toMatchObject({ chain: "dash", valid: true, kind: "P2SH" });
+    expect(only("XmN7PQYWKn5MJFna5fRYgP6mxT2F7xpekF")).toMatchObject({ chain: "dash", valid: false });
+  });
+
+  // The CashAddr specification's own test vectors.
+  it("checks Bitcoin Cash CashAddr addresses, with or without the bitcoincash: prefix", () => {
+    expect(only("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a")).toMatchObject({ chain: "bitcoincash", valid: true, kind: "P2PKH" });
+    expect(only("bitcoincash:ppm2qsznhks23z7629mms6s4cwef74vcwvn0h829pq")).toMatchObject({ chain: "bitcoincash", valid: true, kind: "P2SH" });
+    expect(only("qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a")).toMatchObject({ chain: "bitcoincash", valid: true });
+    expect(only("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6c")).toMatchObject({ chain: "bitcoincash", valid: false });
+  });
+
+  // CIP-19's own test vectors.
+  it("checks Cardano Shelley addresses and refuses testnet and stake addresses as payment addresses", () => {
+    expect(only("addr1qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3n0d3vllmyqwsx5wktcd8cc3sq835lu7drv2xwl2wywfgse35a3x")).toMatchObject({ chain: "cardano", valid: true });
+    expect(only("addr1qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3n0d3vllmyqwsx5wktcd8cc3sq835lu7drv2xwl2wywfgse35a3y")).toMatchObject({ chain: "cardano", valid: false });
+    expect(only("addr_test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3n0d3vllmyqwsx5wktcd8cc3sq835lu7drv2xwl2wywfgs68faae")).toMatchObject({ chain: "cardano", valid: false, kind: "testnet" });
+    expect(only("stake1uyehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gh6ffgw")).toMatchObject({ chain: "cardano", valid: false, kind: "stake address" });
+  });
+
+  it("names Sui, Aptos, Movement and Starknet for a 0x + 64-hex address, since they share the form and have no checksum", () => {
+    const v = checkAddress(`0x00${"ab".repeat(31)}`);
+    expect(v.map((x) => x.chain).sort()).toEqual(["aptos", "movement", "starknet", "sui"]);
+    expect(v.every((x) => x.valid && /checksum/.test(x.note))).toBe(true);
+    // Above Starknet's field size it can only be Sui, Aptos or Movement.
+    expect(checkAddress(`0x${"ff".repeat(32)}`).map((x) => x.chain).sort()).toEqual(["aptos", "movement", "sui"]);
+    // Shorter forms (leading zeros dropped) are Aptos, Movement or Starknet.
+    expect(checkAddress(`0x${"1".repeat(60)}`).map((x) => x.chain).sort()).toEqual(["aptos", "movement", "starknet"]);
+  });
+
+  // Real addresses from Aleo mainnet's latest block (27 Oct 2026); the first one made with a Python bech32m encoder.
+  it("checks Aleo addresses (bech32m with the aleo prefix)", () => {
+    expect(only("aleo10kgvf58ruwt3gqsa0994jhdh6ywgf9uqtxcmv476zf3klengsg8qcwdmhu")).toMatchObject({ chain: "aleo", valid: true });
+    expect(only("aleo1yg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3qe7qu36")).toMatchObject({ chain: "aleo", valid: true });
+    expect(only("aleo10kgvf58ruwt3gqsa0994jhdh6ywgf9uqtxcmv476zf3klengsg8qcwdmhv")).toMatchObject({ chain: "aleo", valid: false });
+    expect(only("aleo10kgvf58ruwt3gqsa0994jhdh6ywgf9uqtxcmv476zf3klengsg8qcwdmh")).toMatchObject({ chain: "aleo", valid: false });
+  });
+
+  // Real addresses from Quantus's own CLI (quantus-cli); SS58 with prefix 189 and a BLAKE2b-512 checksum.
+  it("checks Quantus addresses (SS58, prefix 189, starting qz)", () => {
+    expect(only("qzmTAz3UUw1WGUuVh8nbFmPwcftomduwy6twq6NDR6y9qqtEs")).toMatchObject({ chain: "quantus", valid: true });
+    expect(only("qzm5QCox8Dp5A3oSXZZYHD8YoYgPz7enykZb6RPUropdCyN5h")).toMatchObject({ chain: "quantus", valid: true });
+    expect(only("qzjqcX6UoeVpFp2Gscqt477KwiR9A2ss6RDgMLaxqCf3fA7rK")).toMatchObject({ chain: "quantus", valid: true });
+    expect(only("qzmTAz3UUw1WGUuVh8nbFmPwcftomduwy6twq6NDR6y9qqtEt")).toMatchObject({ chain: "quantus", valid: false });
   });
 
   it("returns nothing for text that is no address on any supported chain", () => {

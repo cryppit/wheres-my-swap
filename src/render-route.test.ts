@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { Route } from "./core/route.js";
-import { renderRoute } from "./render-route.js";
+import { logoUrl, renderRoute } from "./render-route.js";
 
 const base: Route = {
   stops: [
@@ -61,5 +61,14 @@ describe("renderRoute", () => {
     expect(html).not.toContain("<x>");
     expect(html).toContain("&lt;x&gt;");
     expect(html).toMatch(/aria-label="Route: &lt;x&gt; to Solana\. Deposit: done; Credited: done;/);
+  });
+});
+
+describe("logoUrl", () => {
+  it("draws Hyperliquid's mark for HyperEVM and HyperCore stops, and Movement's for Movement", () => {
+    expect(logoUrl("hlevm")).toBe("/logos/hyperliquid.svg");
+    expect(logoUrl("hypercore")).toBe("/logos/hyperliquid.svg");
+    expect(logoUrl("movement")).toBe("/logos/movement.svg");
+    expect(logoUrl("aleo")).toBeNull();
   });
 });

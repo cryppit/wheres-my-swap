@@ -59,4 +59,26 @@ describe("plainAddress", () => {
   it("no jargon in the plain words, for any of them", () => {
     for (const a of [TEX, UA_NO_T, EVM, BTC, SOL, XRP, "t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU1", "alice.near"]) expect(all(plainAddress(a))).not.toMatch(JARGON);
   });
+
+  it("covers the eight newer payout chains in plain words", () => {
+    expect(plainAddress("LVuDpNCSSj6pQ7t9Pv6d6sUkLKoqDEVUnJ")).toMatchObject({ chain: "Litecoin", valid: true, headline: "A valid Litecoin address." });
+    expect(plainAddress("bitcoincash:qpm2qsznhks23z7629mms6s4cwef74vcwvy22gdx6a").steps.join(" ")).toMatch(/never send BTC/);
+    expect(plainAddress("XmN7PQYWKn5MJFna5fRYgP6mxT2F7xpekE")).toMatchObject({ chain: "Dash", valid: true });
+    expect(plainAddress("addr1qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3n0d3vllmyqwsx5wktcd8cc3sq835lu7drv2xwl2wywfgse35a3x")).toMatchObject({ chain: "Cardano", valid: true });
+    expect(plainAddress("stake1uyehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gh6ffgw").headline).toMatch(/^Don't send: a Cardano stake/);
+    const sui = plainAddress(`0x00${"ab".repeat(31)}`);
+    expect(sui.headline).toBe("This could be a Sui, an Aptos, a Movement or a Starknet address.");
+    expect(sui.steps[0]).toMatch(/Ask the recipient which network/);
+    expect(plainAddress(`0x00${"ab".repeat(31)}`, "evm").headline).toBe("Stop: this is not an Ethereum address.");
+    expect(plainAddress("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "fogo")).toMatchObject({ chain: "Solana", valid: true });
+  });
+
+  it("covers the chains NEAR Intents added in 2026: Aleo, Movement, Quantus and HyperCore", () => {
+    expect(plainAddress("aleo10kgvf58ruwt3gqsa0994jhdh6ywgf9uqtxcmv476zf3klengsg8qcwdmhu")).toMatchObject({ chain: "Aleo", valid: true, headline: "A valid Aleo address." });
+    expect(plainAddress("qzmTAz3UUw1WGUuVh8nbFmPwcftomduwy6twq6NDR6y9qqtEs")).toMatchObject({ chain: "Quantus", valid: true, headline: "A valid Quantus address." });
+    expect(plainAddress(`0x00${"ab".repeat(31)}`, "movement")).toMatchObject({ valid: true });
+    expect(plainAddress("qzmTAz3UUw1WGUuVh8nbFmPwcftomduwy6twq6NDR6y9qqtEs", "evm").headline).toBe("Stop: this is not an Ethereum address.");
+    // HyperCore pays out to Ethereum-style addresses.
+    expect(plainAddress("0x5aAeb6053F3E94C9b9A09f33669435E7Ef1BeAed").steps.join(" ")).toMatch(/Hyperliquid/);
+  });
 });
