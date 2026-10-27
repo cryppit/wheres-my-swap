@@ -20,12 +20,11 @@ function answer(label: string, a: SendAnswer): string {
 }
 
 function card(p: PlainAddress): string {
-  const status = p.chain === null ? "not recognised" : p.valid ? "valid" : "has a mistake";
   const zcash = p.zcash ? `<div class="addr-answers">${answer("From a transparent-only wallet", p.zcash.transparent)}${answer("From a shielded wallet", p.zcash.shielded)}</div>` : "";
   const steps = p.steps.length ? `<ol class="addr-steps">${p.steps.map((s) => `<li>${esc(s)}</li>`).join("")}</ol>` : "";
   return [
     `<article class="addr-card" data-valid="${p.valid}">`,
-    `<p class="addr-top"><code>${esc(p.address)}</code><span class="addr-chip">${esc(p.chain ?? "Unknown")} · ${esc(status)}</span></p>`,
+    `<p class="addr-top"><code>${esc(p.address)}</code><span class="addr-chip">${esc(p.chain ?? "Unknown")} · ${esc(p.status)}</span></p>`,
     `<div class="addr-plain"><p class="eyebrow">What this means for you</p><h3>${esc(p.headline)}</h3>${zcash}${steps}</div>`,
     p.chain ? `<p class="addr-what">${esc(p.what)}</p>` : "",
     `</article>`,

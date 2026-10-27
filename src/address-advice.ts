@@ -34,6 +34,8 @@ export interface PlainAddress {
   /** The chain it belongs to, or null when it is no address on any chain we check. */
   chain: string | null;
   valid: boolean;
+  /** The tag next to the address: "valid", or why it can't be paid ("has a mistake" only for a failed typo check). */
+  status: string;
   /** What kind of address it is, in one plain line (shown small under the answer). */
   what: string;
   headline: string;
@@ -186,11 +188,11 @@ export function plainAddress(raw: string, hint: AddressChain | null = null): Pla
   const address = raw.trim();
   const verdicts = checkAddress(address);
   if (verdicts.length === 0) {
-    return { address, chain: null, valid: false, what: "not recognised", headline: "This isn't an address on any chain we check.", steps: ["Check that you copied the whole address, with nothing extra before or after it."] };
+    return { address, chain: null, valid: false, status: "not recognised", what: "not recognised", headline: "This isn't an address on any chain we check.", steps: ["Check that you copied the whole address, with nothing extra before or after it."] };
   }
   // The chain the sender picked, when the address fits it; otherwise the first valid reading.
   const v = verdicts.find((x) => x.valid && x.chain === hint) ?? verdicts.find((x) => x.valid) ?? verdicts[0]!;
-  const base = { address, chain: CHAIN_NAME[v.chain], valid: v.valid, what: plainWhat(v) };
+  const base = { address, chain: CHAIN_NAME[v.chain], valid: v.valid, status: v.valid ? "valid" : "has a mistake", what: plainWhat(v) };
 
   if (hint !== null && !verdicts.some((x) => x.chain === hint)) {
     const looks = anyOf([...new Set(verdicts.map((x) => SHORT[x.chain]))]);
@@ -201,13 +203,13 @@ export function plainAddress(raw: string, hint: AddressChain | null = null): Pla
     return { ...base, headline: advice.next, steps: [], zcash: advice };
   }
   if (!v.valid && v.kind === "stake address") {
-    return { ...base, headline: "Don't send: this is a Cardano reward (stake) address, not a payment address.", steps: ["Payments can't be sent to it.", "Ask the recipient for their Cardano address that starts with addr1."] };
+    return { ...base, status: "can't receive", headline: "Don't send: this is a Cardano reward (stake) address, not a payment address.", steps: ["Payments can't be sent to it.", "Ask the recipient for their Cardano address that starts with addr1."] };
   }
   if (!v.valid && v.kind === "testnet") {
-    return { ...base, headline: "Don't send: this is a Cardano test-network address.", steps: ["Real ADA sent to it would be lost.", "Ask the recipient for their main Cardano address (it starts with addr1)."] };
+    return { ...base, status: "test network", headline: "Don't send: this is a Cardano test-network address.", steps: ["Real ADA sent to it would be lost.", "Ask the recipient for their main Cardano address (it starts with addr1)."] };
   }
   if (!v.valid && v.chain === "near" && v.kind === "named account") {
-    return { ...base, headline: "Don't send: this isn't a valid NEAR account name.", steps: ["NEAR names use only small letters, numbers, dots, - and _ (no capital letters or spaces).", "Ask the recipient to copy their account name again."] };
+    return { ...base, status: "not a valid name", headline: "Don't send: this isn't a valid NEAR account name.", steps: ["NEAR names use only small letters, numbers, dots, - and _ (no capital letters or spaces).", "Ask the recipient to copy their account name again."] };
   }
   if (!v.valid) {
     return { ...base, headline: "Don't send: this address has a mistake.", steps: ["A character is wrong or missing, so the address fails its built-in typo check.", "Copy it again from the source, ideally with a copy button rather than by hand."] };

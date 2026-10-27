@@ -84,6 +84,15 @@ describe("plainAddress", () => {
     expect(plainAddress("addr_test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3n0d3vllmyqwsx5wktcd8cc3sq835lu7drv2xwl2wywfgs68faae").headline).toBe("Don't send: this is a Cardano test-network address.");
   });
 
+  it("the tag says why an address can't be paid, and only a failed typo check reads 'has a mistake'", () => {
+    expect(plainAddress("stake1uyehkck0lajq8gr28t9uxnuvgcqrc6070x3k9r8048z8y5gh6ffgw").status).toBe("can't receive");
+    expect(plainAddress("addr_test1qz2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3n0d3vllmyqwsx5wktcd8cc3sq835lu7drv2xwl2wywfgs68faae").status).toBe("test network");
+    expect(plainAddress("Alice.near").status).toBe("not a valid name");
+    expect(plainAddress(BTC.slice(0, -1) + (BTC.endsWith("q") ? "p" : "q")).status).toBe("has a mistake");
+    expect(plainAddress(BTC).status).toBe("valid");
+    expect(plainAddress("hello").status).toBe("not recognised");
+  });
+
   it("the chain the sender picked is the one answered for, when the address fits it", () => {
     expect(plainAddress(SOL, "fogo")).toMatchObject({ chain: "Fogo", headline: "A well-formed Fogo address." });
     expect(plainAddress(`0x00${"ab".repeat(31)}`, "movement").chain).toBe("Movement");
