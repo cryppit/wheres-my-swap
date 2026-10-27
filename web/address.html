@@ -72,6 +72,7 @@
               </fieldset>
               <button class="check addr-go" id="go" type="submit"><span>Check</span><span class="check-arrow" aria-hidden="true">→</span></button>
             </form>
+            <p class="tg-hint">Also in Telegram: <a href="#telegram">ask @WheresMySwap_Bot</a> before you send.</p>
             <p class="assets-label">Addresses checked on 10 chains</p>
             <ul class="chains" aria-label="Addresses checked on 10 chains">
               <li><img src="/logos/eth.svg" alt="Ethereum" title="Ethereum" width="36" height="36" /></li>
@@ -113,6 +114,28 @@
           <div class="results" id="out" aria-live="polite"></div>
         </div>
       </section>
+
+      <section class="section band" id="telegram" aria-label="Check an address in Telegram">
+        <div class="wrap band-grid">
+          <div>
+            <p class="eyebrow">Also in Telegram</p>
+            <h2 class="mt">Ask the bot before you send.</h2>
+            <p class="lede">The same check, in a chat. Send the bot an address and it answers in plain words, then sends a picture of the answer you can forward to anyone.</p>
+            <ol class="tg-steps">
+              <li><span class="stop">1</span><div><h3>Open the bot</h3><p class="body">Search for <b>@WheresMySwap_Bot</b> in Telegram, or use the button below, and press Start.</p></div></li>
+              <li><span class="stop">2</span><div><h3>Send /address and the address</h3><p class="body">Add the chain you are sending on at the end, if you like:</p><p class="tg-cmd"><code>/address tex1s2rt77ggv6q989lr49rkgzmh5slsksa9khdgte zcash</code></p><p class="body">In a private chat with the bot you can also just paste the address, with no command.</p></div></li>
+              <li><span class="stop">3</span><div><h3>Read the answer</h3><p class="body">Which chain it belongs to, whether it has a typo, and for Zcash whether a transparent-only or a shielded wallet can pay it, then the picture. If you named a chain and the address belongs to another, it says Stop.</p></div></li>
+            </ol>
+            <p class="mt-cta"><a class="cta" href="https://t.me/WheresMySwap_Bot" target="_blank" rel="noopener noreferrer">Open @WheresMySwap_Bot <span aria-hidden="true">↗</span></a></p>
+            <p class="note">Chain words it knows: zcash, bitcoin, ethereum (or base, arbitrum, optimism, polygon, bnb), solana, tron, xrp, stellar, ton, dogecoin, near. The bot reads only the address itself: nothing is looked up or kept.</p>
+          </div>
+          <figure class="tg-demo">
+            <p class="tg-msg"><code>/address tex1s2rt…khdgte zcash</code></p>
+            <img src="/img/tg-address-card.jpg" alt="The bot's answer as a picture. Zcash, valid. This is a TEX address, so send from a transparent balance. From a transparent-only wallet: yes. From a shielded wallet: no, move the ZEC to a transparent address first." width="1200" height="902" loading="lazy" />
+            <figcaption>What the bot sends back, after the text</figcaption>
+          </figure>
+        </div>
+      </section>
     </main>
 
     <footer class="footer" id="contact">
@@ -129,6 +152,7 @@
               <li><a class="ext" href="/address">Can your wallet send to this address?</a></li>
               <li><a class="ext" href="/recorder">Flight Recorder</a></li>
               <li><a class="ext" href="https://t.me/WheresMySwap_Bot" target="_blank" rel="noopener noreferrer">Telegram bot</a></li>
+              <li><a class="ext" href="https://github.com/cryppit/wheres-my-swap#verify-the-copy-you-run" target="_blank" rel="noopener noreferrer">Verify this build</a></li>
               <li><a class="ext" href="/#proven">What proven means</a></li>
             </ul>
           </div>

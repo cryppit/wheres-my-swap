@@ -23,7 +23,7 @@ describe("plainAddress", () => {
 
   it("a unified address with no transparent receiver: a transparent-only wallet cannot pay it", () => {
     const p = plainAddress(UA_NO_T);
-    expect(p.headline).toBe("This unified address has no transparent receiver.");
+    expect(p.headline).toBe("This unified address has only an Orchard receiver, so send from a wallet that supports Orchard.");
     expect(p.zcash?.transparent.can).toBe("no");
   });
 

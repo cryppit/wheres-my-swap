@@ -552,3 +552,18 @@ img[src$="linea.svg"], img[src$="zksync.svg"] { background: #f3efe4; border-radi
 .form .cp:has(input:checked) { color: var(--hi); }
 /* The all-black logos (Stellar, Linea, ZKsync, Aptos, Plasma) sit on a light disc so they show on the dark coins */
 :is(.cp, .chains, .ill-top, .ill-steps) :is(img[src$="/stellar.svg"], img[src$="/linea.svg"], img[src$="/zksync.svg"], img[src$="/aptos.svg"], img[src$="/plasma.svg"]) { background: radial-gradient(circle, #f3efe4 55%, #cfd3e8); }
+
+/* The address page's Telegram guide: three steps, the command to copy, and the picture the bot sends. */
+.tg-hint { margin-top: 14px; color: var(--mist); font-size: 0.95rem; }
+.tg-hint a { color: var(--hi); }
+.tg-steps { margin: 32px 0 0; padding: 0; list-style: none; }
+.tg-steps > li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 20px; padding: 22px 0; border-top: 1px solid var(--line); }
+.tg-steps h3 { margin-top: 4px; font-size: 1.15rem; }
+.tg-steps p.body { margin-top: 8px; max-width: 56ch; color: var(--mist); }
+.tg-cmd { margin-top: 10px; }
+.tg-cmd code { display: block; padding: 12px 14px; background: var(--ink-deep); border: 1px solid var(--line); border-radius: 10px; color: var(--bone); font: 0.85rem/1.5 var(--font-mono); }
+.tg-demo { margin: 0; display: grid; gap: 12px; justify-items: end; }
+.tg-msg { margin: 0; max-width: 100%; padding: 10px 14px; background: #2b5278; border-radius: 14px 14px 4px 14px; }
+.tg-msg code { color: #fff; font: 0.85rem/1.4 var(--font-mono); }
+.tg-demo img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7); }
+.tg-demo figcaption { justify-self: start; color: var(--mist); font-size: 0.85rem; }

@@ -207,6 +207,14 @@ describe("zcashSendAdvice", () => {
     expect(a.shielded.can).toBe("yes");
   });
 
+  it("an Orchard-only unified address: only a wallet with Orchard can pay it, a Sapling-only wallet cannot", () => {
+    const a = zcashSendAdvice(classifyZcashAddress("u1r9ffm4hq7q2xcv4mwfhd0mpe0aw22klu9zxzsyr7shkx5rh77s0u3vpuc0vjchh7hvczldd8mwxgcydzyluhtd4h0zejlc5p5qzn5wn0"));
+    expect(a.next).toBe("This unified address has only an Orchard receiver, so send from a wallet that supports Orchard.");
+    expect(a.transparent.can).toBe("no");
+    expect(a.shielded.can).toBe("if-supported");
+    expect(a.shielded.why).toMatch(/Sapling-only wallet can't pay it/);
+  });
+
   it("a unified address with a transparent receiver: a transparent wallet can pay it if it reads unified addresses", () => {
     const tAndOrchard = vectors.unified.find((v) => v.p2pkh && v.orchard && !v.sapling && !v.unknown);
     const a = zcashSendAdvice(classifyZcashAddress(tAndOrchard?.address ?? ""));

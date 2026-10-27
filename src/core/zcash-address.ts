@@ -502,6 +502,14 @@ export function zcashSendAdvice(a: ZcashAddressInfo): ZcashSendAdvice {
           shielded,
         };
       }
+      if (r.orchard && !r.sapling) {
+        // Orchard only: a shielded wallet that predates Orchard (NU5, 2022) knows Sapling alone and cannot pay it.
+        return {
+          next: "This unified address has only an Orchard receiver, so send from a wallet that supports Orchard.",
+          transparent: no("No. It has no transparent receiver; ask the recipient for a t-address, or send from a wallet that supports Orchard."),
+          shielded: { can: "if-supported", why: "Yes, if your wallet supports Orchard (added to Zcash in the NU5 upgrade, 2022). A Sapling-only wallet can't pay it: ask the recipient for an address with a Sapling receiver." },
+        };
+      }
       return {
         next: "This unified address has no transparent receiver.",
         transparent: no("No. A transparent-only wallet can't pay it; ask the recipient for a t-address, or send from a shielded wallet."),
