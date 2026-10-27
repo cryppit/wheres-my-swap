@@ -5,7 +5,7 @@ import { fastnearClient, searchPayout } from "../src/check.js";
 import { publicPayoutClient } from "../src/payouts.js";
 import { renderZecRouteHtml } from "../src/render-zec.js";
 import { fastnearZecSource, zecRoute } from "../src/zec-route.js";
-import { errorHtml } from "./shared.js";
+import { errorHtml, loadingHtml } from "./shared.js";
 
 const out = document.getElementById("route") as HTMLDivElement;
 const payouts = publicPayoutClient(undefined, { solanaRpc: new URL("/api/solana", location.href).href });
@@ -15,7 +15,7 @@ let running = 0;
 async function run(): Promise<void> {
   const id = ++running;
   const nowNs = BigInt(Date.now()) * 1_000_000n;
-  out.innerHTML = '<p class="status-line">Reading the newest ZEC withdrawals…</p>';
+  out.innerHTML = loadingHtml("Reading the chain…", "The newest ZEC withdrawals from NEAR Intents, and each payout on Zcash.");
   try {
     const r = await zecRoute(fastnearZecSource(fastnearClient()), (w) => searchPayout(w, payouts, nowNs), nowNs, {
       onRow: (rows, total) => {

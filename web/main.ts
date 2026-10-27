@@ -14,7 +14,7 @@ import { esc, renderHtml } from "../src/render-html.js";
 import { renderRoute } from "../src/render-route.js";
 import { renderText } from "../src/render-text.js";
 import { playRoute } from "./route.js";
-import { errorHtml, fromHash, goTo, nowSec, wireCopyButtons } from "./shared.js";
+import { errorHtml, fromHash, goTo, loadingHtml, nowSec, wireCopyButtons } from "./shared.js";
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 
@@ -37,7 +37,7 @@ async function run(query: string): Promise<void> {
   const id = ++running;
   input.value = q;
   go.disabled = true;
-  out.innerHTML = '<p class="status-line">Reading NEAR and the chains…</p>';
+  out.innerHTML = loadingHtml("Reading the chain…", "NEAR, the chain you paid from and the chain you are paid on, for every hop of this order.");
   try {
     const result = await checkOrder(q, fastnearClient(), BigInt(Date.now()) * 1_000_000n, undefined, payouts, publicOriginClient());
     if (id !== running) return;

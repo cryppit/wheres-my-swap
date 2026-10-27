@@ -567,3 +567,14 @@ img[src$="linea.svg"], img[src$="zksync.svg"] { background: #f3efe4; border-radi
 .tg-msg code { color: #fff; font: 0.85rem/1.4 var(--font-mono); }
 .tg-demo img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.7); }
 .tg-demo figcaption { justify-self: start; color: var(--mist); font-size: 0.85rem; }
+
+/* While a check reads public data: a card that pops in and glows, with a pulsing dot and a light sweeping along it. */
+.loading { position: relative; display: flex; align-items: center; gap: 14px; margin-top: 24px; padding: 16px 18px; overflow: hidden; border: 1px solid color-mix(in srgb, var(--hi) 50%, transparent); border-radius: 14px; background: linear-gradient(90deg, color-mix(in srgb, var(--hi) 5%, transparent), color-mix(in srgb, var(--hi) 12%, transparent), color-mix(in srgb, var(--hi) 5%, transparent)); box-shadow: 0 0 0 4px color-mix(in srgb, var(--hi) 6%, transparent), 0 0 34px color-mix(in srgb, var(--hi) 28%, transparent); animation: ld-pop 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.ld-orb { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; background: var(--hi); box-shadow: 0 0 18px color-mix(in srgb, var(--hi) 85%, transparent); animation: ld-pulse 1.2s ease-out infinite; }
+.ld-text b { display: block; color: var(--hi); font: 700 1.05rem/1.3 var(--font-text); text-shadow: 0 0 18px color-mix(in srgb, var(--hi) 45%, transparent); }
+.ld-text span { display: block; margin-top: 2px; color: var(--mist); font-size: 0.9rem; }
+.ld-bar { position: absolute; left: 0; bottom: 0; width: 40%; height: 2px; background: linear-gradient(90deg, transparent, var(--hi), transparent); animation: ld-sweep 1.4s ease-in-out infinite; }
+@keyframes ld-pop { from { opacity: 0; transform: translateY(6px) scale(0.97); } to { opacity: 1; transform: none; } }
+@keyframes ld-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hi) 60%, transparent), 0 0 18px color-mix(in srgb, var(--hi) 85%, transparent); } 100% { box-shadow: 0 0 0 14px transparent, 0 0 18px color-mix(in srgb, var(--hi) 85%, transparent); } }
+@keyframes ld-sweep { from { transform: translateX(-100%); } to { transform: translateX(260%); } }
+@media (prefers-reduced-motion: reduce) { .loading, .ld-orb, .ld-bar { animation: none; } }

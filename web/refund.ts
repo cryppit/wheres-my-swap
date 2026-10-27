@@ -4,7 +4,7 @@
 import { checkBtcDeposit, checkRefundBoard, publicUtxoRefundClients } from "../src/btc-refund.js";
 import { renderBtcRefundHtml, renderRefundBoardHtml } from "../src/render-btc-refund-html.js";
 import { esc } from "../src/render-html.js";
-import { errorHtml, fromHash, goTo, nowSec, wireCopyButtons } from "./shared.js";
+import { errorHtml, fromHash, goTo, loadingHtml, nowSec, wireCopyButtons } from "./shared.js";
 
 const $ = <T extends HTMLElement>(id: string): T => document.getElementById(id) as T;
 const form = $<HTMLFormElement>("form");
@@ -29,7 +29,7 @@ async function run(query: string): Promise<void> {
   const id = ++running;
   input.value = q;
   go.disabled = true;
-  out.innerHTML = '<p class="status-line">Reading the chain and the bridge…</p>';
+  out.innerHTML = loadingHtml("Reading the chain…", "The Bitcoin or Zcash chain, the Omni bridge indexer and the connector contract on NEAR.");
   try {
     const { txid, vout } = parse(q);
     const r = await checkBtcDeposit(txid, clients, nowSec(), vout);
@@ -73,7 +73,7 @@ async function readBoard(): Promise<void> {
 board.addEventListener("click", (ev) => {
   const retry = ev.target instanceof Element ? ev.target.closest("button[data-retry]") : null;
   if (retry) {
-    board.innerHTML = '<p class="status-line">Reading the bridge contracts…</p>';
+    board.innerHTML = loadingHtml("Reading the chain…", "Every refund request on the Bitcoin and Zcash connectors on NEAR.");
     void readBoard();
   }
 });

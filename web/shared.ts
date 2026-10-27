@@ -53,3 +53,7 @@ export function errorHtml(e: unknown): string {
 }
 
 export const nowSec = (): number => Math.floor(Date.now() / 1000);
+
+/** What shows while a check reads public data: a glowing card that says what is being read, so nobody thinks it froze. */
+export const loadingHtml = (title: string, detail: string): string =>
+  `<div class="loading" role="status"><span class="ld-orb" aria-hidden="true"></span><div class="ld-text"><b>${esc(title)}</b><span>${esc(detail)}</span></div><span class="ld-bar" aria-hidden="true"></span></div>`;
