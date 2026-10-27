@@ -473,7 +473,8 @@ img[src$="linea.svg"], img[src$="zksync.svg"] { background: #f3efe4; border-radi
 .wait-go:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* The address page (web/address.ts) */
-.addr-input { width: 100%; min-height: 84px; resize: vertical; font-family: var(--font-mono); }
+/* One address per line, never broken mid-address: a long one scrolls sideways instead of wrapping. */
+.addr-input { width: 100%; height: auto; min-height: 9.5rem; padding: 12px 14px; resize: vertical; font: 0.84rem/1.7 var(--font-mono); white-space: pre; overflow-wrap: normal; overflow-x: auto; }
 .addr-row { margin-top: 12px; align-items: center; flex-wrap: wrap; }
 .addr-hint-label { color: var(--mist); font-size: 0.9rem; }
 .addr-hint { flex: 1 1 240px; }
