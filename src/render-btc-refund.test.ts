@@ -150,7 +150,7 @@ describe("renderBtcRefundText for Zcash", () => {
 
   it("a transparent t-address refund: execute with near-cli, no shielded bundle", () => {
     const text = zreport({ ...ZFACTS, senders: ["t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU1"], funding: { kind: "transparent", pools: [] }, msg: { recipient_id: "intents.near", refund_address: "t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU1" } });
-    expect(text).toContain("t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU1, a transparent t-address.");
+    expect(text).toContain("t1LSvEjCZBHAedhmQtqY9V4BBfP3xkqHXU1, a transparent address.");
     expect(text).toContain("A transparent refund: execute_refund pays this address one ordinary output, with no shielded bundle, so near-cli can send it.");
     expect(text).toContain(`near contract call-function as-transaction zcash-connector.bridge.near execute_refund json-args '{"utxo_storage_key":"${ZFACTS.txid}@0","chain_specific_data":null}'`);
   });
@@ -172,7 +172,7 @@ describe("renderBtcRefundText for Zcash", () => {
   it("a Sapling-only refund address (synthetic): says the connector cannot pay it, and gives no commands", () => {
     const sapling = "zs1mrhc9y7jdh5r9ece8u5khgvj9kg0zgkxzdduyv0whkg7lkcrkx5xqem3e48avjq9wn2rukydkwn";
     const text = zreport({ ...ZFACTS, msg: { recipient_id: "intents.near", refund_address: sapling } });
-    expect(text).toContain("cannot pay a Sapling z-address");
+    expect(text).toContain("cannot pay a shielded Sapling address");
     expect(text).not.toContain("1. ");
   });
 

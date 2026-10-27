@@ -19,3 +19,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 The logos themselves are the marks of their projects, shown only to name the chain a step happened on; no affiliation is implied.
+
+aleo.svg: the "A" icon (secondary-icon-light) from Aleo's official logo pack, aleo.org/aleo-logos.zip (aleo.org/brand),
+redrawn with inline fills. quantus.svg: the Q mark from the logo in quantus.com's page header, its wordmark removed.
+fogo.svg: Fogo's site icon from fogo.io, traced into vector shapes (the bot's card renderer draws no embedded pictures). Not from web3icons and not MIT: marks of
+their projects, shown only to name the chain.
+

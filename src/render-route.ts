@@ -24,8 +24,8 @@ const ICON: Record<StopState, string> = {
 };
 
 /** Chains with a logo under /logos (web3icons, MIT: web/public/logos/LICENSE). Others keep the state icon alone. */
-export const LOGOS = new Set(["eth", "base", "arb", "op", "bsc", "bnb", "pol", "avax", "gnosis", "bera", "monad", "plasma", "scroll", "tron", "btc", "ltc", "doge", "bch", "dash", "zec", "zcash", "xrp", "sol", "ton", "sui", "stellar", "aptos", "cardano", "starknet", "near", "linea", "zksync", "movement", "hlevm", "hypercore"]);
-const FILE: Record<string, string> = { bnb: "bsc", zcash: "zec", hlevm: "hyperliquid", hypercore: "hyperliquid" };
+export const LOGOS = new Set(["eth", "base", "arb", "op", "bsc", "bnb", "pol", "avax", "gnosis", "bera", "monad", "plasma", "scroll", "tron", "btc", "ltc", "doge", "bch", "dash", "zec", "zcash", "xrp", "sol", "ton", "sui", "stellar", "aptos", "cardano", "starknet", "near", "linea", "zksync", "movement", "hlevm", "hypercore", "aleo", "qtc", "quantus", "fogo"]);
+const FILE: Record<string, string> = { bnb: "bsc", zcash: "zec", hlevm: "hyperliquid", hypercore: "hyperliquid", qtc: "quantus" };
 export const logoUrl = (chain: string | null): string | null => (chain && LOGOS.has(chain) ? `/logos/${FILE[chain] ?? chain}.svg` : null);
 
 const icon = (s: StopState): string => `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[s]}</svg>`;

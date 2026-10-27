@@ -9,7 +9,7 @@ const base: Route = {
     { key: "credit", title: "Credited", place: "NEAR Intents", state: "done", atNs: 1n, chain: "near" },
     { key: "swap", title: "Swapped", place: "NEAR Intents", state: "done", atNs: 2n, chain: "near" },
     { key: "withdrawal", title: "Withdrawn", place: "to Solana", state: "done", atNs: 3n, chain: "near" },
-    { key: "payout", title: "Paid out", place: "Solana", state: "done", atNs: 4n, chain: "fogo" },
+    { key: "payout", title: "Paid out", place: "X Layer", state: "done", atNs: 4n, chain: "xlayer" },
   ],
   from: "Ethereum",
   to: "Solana",
@@ -65,10 +65,13 @@ describe("renderRoute", () => {
 });
 
 describe("logoUrl", () => {
-  it("draws Hyperliquid's mark for HyperEVM and HyperCore stops, and Movement's for Movement", () => {
+  it("draws the mark of every newer chain: Hyperliquid for HyperEVM and HyperCore, Movement, Aleo, Quantus and Fogo", () => {
     expect(logoUrl("hlevm")).toBe("/logos/hyperliquid.svg");
     expect(logoUrl("hypercore")).toBe("/logos/hyperliquid.svg");
     expect(logoUrl("movement")).toBe("/logos/movement.svg");
-    expect(logoUrl("aleo")).toBeNull();
+    expect(logoUrl("aleo")).toBe("/logos/aleo.svg");
+    expect(logoUrl("qtc")).toBe("/logos/quantus.svg");
+    expect(logoUrl("fogo")).toBe("/logos/fogo.svg");
+    expect(logoUrl("unknownchain")).toBeNull();
   });
 });
