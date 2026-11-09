@@ -104,7 +104,7 @@ the signing account needs, deposit plus the gas reserved upfront: a little over 
 to sign. `request_refund` needs `bridge-cli` (it builds the inclusion proof, and a bad proof still costs the 2 NEAR);
 executing a Bitcoin or transparent Zcash refund and the signing step are plain `near` calls, after one
 `near account import-account`. A request is only possible while the bridge's light client still holds the deposit's
-block: about 366 days for Bitcoin (52,704 blocks) and **90 days for Zcash** (103,680 blocks at 75 seconds), after which
+block: about 366 days for Bitcoin (52,704 blocks) and **about 30 days for Zcash** (103,680 blocks at 25 seconds since NU7, 6 Nov 2026; 75 seconds before it), after which
 the check says "too old to request". `src/core/refund-calls.ts` gives the exact calls (receiver, method, arguments, 250
 Tgas, deposit) that the near commands and a wallet button both use. Anyone may pay for those calls; the contract only
 ever pays the refund address. We suggest no address but the deposit's own refund address or, when it has none, its
